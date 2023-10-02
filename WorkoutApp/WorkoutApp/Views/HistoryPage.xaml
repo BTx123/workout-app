@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:xc="clr-namespace:XCalendar.Maui.Views;assembly=XCalendar.Maui"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:calendar="clr-namespace:WorkoutApp.Core.Models.Calendar;assembly=WorkoutApp.Core"
+             xmlns:models="clr-namespace:WorkoutApp.Core.Models;assembly=WorkoutApp.Core"
+             x:Class="WorkoutApp.Views.HistoryPage"
+             x:DataType="viewModels:HistoryPageViewModel"
+             x:Name="This"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <mct:VariableMultiValueConverter x:Key="AnyVariableMultiValueConverter" ConditionType="Any" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding AppearingCommand}" />
+        <mct:EventToCommandBehavior EventName="Disappearing" Command="{Binding DisappearingCommand}" />
+    </ContentPage.Behaviors>
+
+    <AbsoluteLayout>
+
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All"
+              RowDefinitions="Auto,*" ColumnDefinitions="*"
+              Margin="{StaticResource Margin}"
+              RowSpacing="{StaticResource Spacing}" ColumnSpacing="{StaticResource Spacing}"
+              IsVisible="{Binding IsNotBusy}">
+
+            <Border Grid.Row="0" StrokeThickness="0" BackgroundColor="Transparent">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout>
+                    <xc:CalendarView Days="{Binding WorkoutCalendar.Days}"
+                                     DaysOfWeek="{Binding WorkoutCalendar.DayNamesOrder}"
+                                     DayNamesHeightRequest="55"
+                                     DaysViewHeightRequest="320"
+                                     NavigatedDate="{Binding WorkoutCalendar.NavigatedDate}"
+                                     LeftArrowCommand="{Binding NavigateCommand}"
+                                     RightArrowCommand="{Binding NavigateCommand}"
+                                     BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+
+                        <xc:CalendarView.RightArrowCommandParameter>
+                            <x:Int32>1</x:Int32>
+                        </xc:CalendarView.RightArrowCommandParameter>
+
+                        <xc:CalendarView.LeftArrowCommandParameter>
+                            <x:Int32>-1</x:Int32>
+                        </xc:CalendarView.LeftArrowCommandParameter>
+
+                        <xc:CalendarView.NavigationViewTemplate>
+                            <ControlTemplate>
+                                <xc:NavigationView Text="{Binding Text, Source={RelativeSource TemplatedParent}}"
+                                                   HeightRequest="50"
+                                                   LeftArrowCommand="{Binding LeftArrowCommand, Source={RelativeSource TemplatedParent}}"
+                                                   LeftArrowCommandParameter="{Binding LeftArrowCommandParameter, Source={RelativeSource TemplatedParent}}"
+                                                   RightArrowCommand="{Binding RightArrowCommand, Source={RelativeSource TemplatedParent}}"
+                                                   RightArrowCommandParameter="{Binding RightArrowCommandParameter, Source={RelativeSource TemplatedParent}}"
+                                                   BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}" />
+                            </ControlTemplate>
+                        </xc:CalendarView.NavigationViewTemplate>
+
+                        <xc:CalendarView.DayNameTemplate>
+                            <DataTemplate x:DataType="{x:Type system:DayOfWeek}">
+                                <Label FontSize="15"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding ., Converter={StaticResource LocalizeDayOfWeekAndCharLimitConverter}, ConverterParameter=3}"
+                                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                                       VerticalTextAlignment="Center"/>
+                            </DataTemplate>
+                        </xc:CalendarView.DayNameTemplate>
+
+                        <xc:CalendarView.DayTemplate>
+                            <DataTemplate x:DataType="{x:Type calendar:WorkoutDay}">
+                                <Border Margin="2.5" StrokeThickness="0" BackgroundColor="Transparent">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="100" />
+                                    </Border.StrokeShape>
+
+                                    <xc:DayView DateTime="{Binding DateTime}"
+                                                HeightRequest="42"
+                                                IsCurrentMonth="{Binding IsCurrentMonth}"
+                                                IsInvalid="{Binding IsInvalid}"
+                                                IsSelected="{Binding IsSelected}"
+                                                IsToday="{Binding IsToday}">
+
+                                        <xc:DayView.CurrentMonthStyle>
+                                            <Style BasedOn="{StaticResource DefaultDayViewCurrentMonthStyle}" TargetType="{x:Type xc:DayView}">
+                                                <!--<Setter Property="BackgroundColor" Value="{Binding BindingContext.DayCurrentMonthBackgroundColor, Source={x:Reference This}}"/>-->
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                                                <Setter Property="Command" Value="{Binding BindingContext.ChangeDateSelectionCommand, Source={x:Reference This}}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding DateTime}"/>
+                                            </Style>
+                                        </xc:DayView.CurrentMonthStyle>
+
+                                        <xc:DayView.OtherMonthStyle>
+                                            <Style BasedOn="{StaticResource DefaultDayViewOtherMonthStyle}" TargetType="{x:Type xc:DayView}">
+                                                <!--<Setter Property="BackgroundColor" Value="{Binding BindingContext.DayOtherMonthBackgroundColor, Source={x:Reference This}}"/>-->
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"/>
+                                                <Setter Property="Command" Value="{Binding BindingContext.ChangeDateSelectionCommand, Source={x:Reference This}}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding DateTime}"/>
+                                            </Style>
+                                        </xc:DayView.OtherMonthStyle>
+
+                                        <xc:DayView.TodayStyle>
+                                            <Style BasedOn="{StaticResource DefaultDayViewTodayStyle}" TargetType="{x:Type xc:DayView}">
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray600}}"/>
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                                                <Setter Property="Command" Value="{Binding BindingContext.ChangeDateSelectionCommand, Source={x:Reference This}}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding DateTime}"/>
+                                            </Style>
+                                        </xc:DayView.TodayStyle>
+
+                                        <xc:DayView.SelectedStyle>
+                                            <Style BasedOn="{StaticResource DefaultDayViewSelectedStyle}" TargetType="{x:Type xc:DayView}">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                                <Setter Property="Command" Value="{Binding BindingContext.ChangeDateSelectionCommand, Source={x:Reference This}}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding DateTime}"/>
+                                            </Style>
+                                        </xc:DayView.SelectedStyle>
+
+                                        <xc:DayView.InvalidStyle>
+                                            <Style BasedOn="{StaticResource DefaultDayViewInvalidStyle}" TargetType="{x:Type xc:DayView}">
+                                                <!--<Setter Property="BackgroundColor" Value="{Binding BindingContext.DayInvalidBackgroundColor, Source={x:Reference This}}"/>-->
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"/>
+                                                <Setter Property="Command" Value="{Binding BindingContext.ChangeDateSelectionCommand, Source={x:Reference This}}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding DateTime}"/>
+                                            </Style>
+                                        </xc:DayView.InvalidStyle>
+
+                                        <xc:DayView.ControlTemplate>
+                                            <ControlTemplate>
+                                                <!--Using a Grid to stack views on the z axis-->
+                                                <!--TemplatedParent refers to the view that the ControlTemplate resides in-->
+                                                <Grid BindingContext="{Binding BindingContext, Source={RelativeSource TemplatedParent}}"
+                                                      RowDefinitions="1.5*,*"
+                                                      RowSpacing="2">
+
+                                                    <!--ContentPresenter displays the default content for the control-->
+                                                    <ContentPresenter Grid.Row="0" Grid.RowSpan="2" VerticalOptions="Center"/>
+
+                                                    <HorizontalStackLayout Grid.Row="1"
+                                                                           BindableLayout.ItemsSource="{Binding Workouts}"
+                                                                           HorizontalOptions="Center"
+                                                                           Spacing="2.5">
+
+                                                        <!--I want the event indicators to only be visible when the DateTime is in the currently navigated month-->
+                                                        <HorizontalStackLayout.IsVisible>
+                                                            <MultiBinding Converter="{StaticResource AllTrueConverter}">
+                                                                <Binding Path="IsCurrentMonth"/>
+                                                                <Binding Path="IsInvalid" Converter="{StaticResource InvertedBoolConverter}"/>
+                                                            </MultiBinding>
+                                                        </HorizontalStackLayout.IsVisible>
+
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate x:DataType="{x:Type models:Workout}">
+                                                                <BoxView CornerRadius="100"
+                                                                         HeightRequest="7" WidthRequest="7"
+                                                                         VerticalOptions="Center" HorizontalOptions="CenterAndExpand"
+                                                                         Color="{AppThemeBinding Light={StaticResource Tertiary}, Dark={StaticResource Secondary}}"/>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+
+                                                    </HorizontalStackLayout>
+
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </xc:DayView.ControlTemplate>
+    
+                                    </xc:DayView>
+    
+                                </Border>
+                            </DataTemplate>
+                        </xc:CalendarView.DayTemplate>
+    
+                    </xc:CalendarView>
+                    <Button Text="Today" FontAttributes="Bold" Command="{Binding NavigateToTodayCommand}" HeightRequest="45" CornerRadius="0" />
+                </VerticalStackLayout>
+
+            </Border>
+
+            <CollectionView Grid.Row="1" ItemsSource="{Binding SelectedWorkouts}"
+                            IsVisible="{Binding IsListBusy, Converter={StaticResource InvertedBoolConverter}}">
+                <CollectionView.EmptyView>
+                    <Label Text="No Workouts"
+                           FontSize="Large"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"/>
+                </CollectionView.EmptyView>
+    
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="5" HorizontalItemSpacing="5" />
+                </CollectionView.ItemsLayout>
+    
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:Workout}">
+                        <Border StrokeThickness="0" Stroke="Transparent">
+    
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15"/>
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="Auto,*">
+    
+                                <BoxView Grid.Column="0"
+                                     Color="{StaticResource Tertiary}"
+                                     WidthRequest="20"/>
+    
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10" Spacing="5"
+                                                     BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                                    <Label FontSize="Medium" FontAttributes="Bold"
+                                           Text="{Binding Name}"
+                                           TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"/>
+                                    <Label FontSize="Small"
+                                           Text="{Binding StartedAt, StringFormat='{0:MMMM dd hh:mm tt}'}"
+                                           TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}"
+                                           VerticalTextAlignment="Center"/>
+                                    <Label FontSize="Small"
+                                           TextColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Duration}" />
+                                                <Span Text=" min" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+
+        <!-- Fade out overlay -->
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All"
+              HorizontalOptions="Fill" VerticalOptions="Fill"
+              BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" Opacity="0.5">
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource AnyVariableMultiValueConverter}">
+                    <Binding Path="IsBusy" />
+                    <Binding Path="IsRefreshing" />
+                    <Binding Path="IsCalendarBusy" />
+                    <Binding Path="IsListBusy" />
+                </MultiBinding>
+            </Grid.IsVisible>
+        </Grid>
+
+        <!-- Busy indicator overlay -->
+        <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All"
+              HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Grid.IsVisible>
+                <MultiBinding Converter="{StaticResource AnyVariableMultiValueConverter}">
+                    <Binding Path="IsBusy" />
+                    <Binding Path="IsRefreshing" />
+                    <Binding Path="IsCalendarBusy" />
+                    <Binding Path="IsListBusy" />
+                </MultiBinding>
+            </Grid.IsVisible>
+            <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center">
+                <ActivityIndicator.IsRunning>
+                    <MultiBinding Converter="{StaticResource AnyVariableMultiValueConverter}">
+                        <Binding Path="IsBusy" />
+                        <Binding Path="IsRefreshing" />
+                        <Binding Path="IsCalendarBusy" />
+                        <Binding Path="IsListBusy" />
+                    </MultiBinding>
+                </ActivityIndicator.IsRunning>
+            </ActivityIndicator>
+        </Grid>
+    </AbsoluteLayout>
+   
+</ContentPage>

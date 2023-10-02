@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="WorkoutApp.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:WorkoutApp.Views"
+       FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <ShellContent Title="Workout"
+                      Icon="{StaticResource Dumbbell}"
+                      ContentTemplate="{DataTemplate views:MainPage}" />
+        <ShellContent Title="Progress"
+                      Icon="{StaticResource ChartLine}"
+                      ContentTemplate="{DataTemplate views:ProgressPage}" />
+        <ShellContent Title="History"
+                      Icon="{StaticResource Clock}"
+                      ContentTemplate="{DataTemplate views:HistoryPage}" />
+        <ShellContent Title="Settings"
+                      Icon="{StaticResource Gear}"
+                      ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </TabBar>
+
+</Shell>

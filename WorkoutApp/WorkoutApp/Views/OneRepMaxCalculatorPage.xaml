@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             x:Class="WorkoutApp.Views.OneRepMaxCalculatorPage"
+             x:DataType="viewModels:OneRepMaxCalculatorViewModel"
+             Title="1RM Calculator">
+    <ContentPage.Content>
+
+        <ScrollView Margin="{StaticResource Margin}">
+            <VerticalStackLayout Spacing="{StaticResource Spacing}">
+
+                <VerticalStackLayout.Resources>
+                    <Style CanCascade="True" TargetType="{x:Type Label}">
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="FontSize" Value="Medium" />
+                    </Style>
+                    <Style CanCascade="True" TargetType="{x:Type Entry}">
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="FontSize" Value="Medium" />
+                    </Style>
+                </VerticalStackLayout.Resources>
+
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto,*" ColumnSpacing="{StaticResource Spacing}">
+                    <Label Grid.Column="0" Text="Weight Lifted:" />
+                    <Entry Grid.Column="1" Text="{Binding WeightLifted}" Keyboard="Numeric" ReturnType="Next" />
+                    <Label Grid.Column="2" Text="{Binding WeightLiftedUnitString}" />
+                    <Label Grid.Column="3" Text="Repetitions:" />
+                    <Entry Grid.Column="4" Text="{Binding Repetitions}" Keyboard="Numeric" ReturnType="Done" />
+                </Grid>
+
+                <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="{StaticResource Spacing}" HorizontalOptions="Center">
+                    <Label Grid.Column="0" Text="1RM:" />
+                    <Label Grid.Column="1" Text="{Binding OneRepMax}" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        
+    </ContentPage.Content>
+</ContentPage>

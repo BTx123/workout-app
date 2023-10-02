@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="WorkoutApp.Views.ProgressPage"
+             x:DataType="viewModels:ProgressPageViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior EventName="Loaded"
+                                    Command="{Binding LoadedCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <lvc:CartesianChart
+            Series="{Binding Series}"
+            XAxes="{Binding XAxes}"
+            Title="{Binding ChartTitle}"
+            ZoomMode="Both" />
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:XCalendar.Maui.Styles;assembly=XCalendar.Maui"
+    xmlns:xc="clr-namespace:XCalendar.Maui.Views;assembly=XCalendar.Maui">
+
+    <Style x:Key="DefaultDayViewCurrentMonthStyle" TargetType="{x:Type xc:DayView}"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDayViewCurrentMonthStyle}">
+    </Style>
+
+    <Style x:Key="DefaultDayViewOtherMonthStyle" TargetType="{x:Type xc:DayView}"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDayViewOtherMonthStyle}">
+    </Style>
+
+    <Style x:Key="DefaultDayViewTodayStyle" TargetType="{x:Type xc:DayView}"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDayViewTodayStyle}">
+    </Style>
+
+    <Style TargetType="{x:Type xc:DayView}" x:Key="DefaultDayViewSelectedStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDayViewSelectedStyle}">
+    </Style>
+
+    <Style TargetType="{x:Type xc:DayView}" x:Key="DefaultDayViewInvalidStyle"
+           BasedOn="{x:Static styles:DefaultStyles.DefaultDayViewInvalidStyle}">
+    </Style>
+
+</ResourceDictionary>

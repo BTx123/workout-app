@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:fonts="clr-namespace:WorkoutApp.Resources.Fonts">
+    <FontImage x:Key="Dumbbell"
+               FontFamily="FontAwesomeSolid"
+               Glyph="{x:Static fonts:FontAwesomeSolid.Dumbbell}"/>
+    <FontImage x:Key="Gear"
+               FontFamily="FontAwesomeSolid"
+               Glyph="{x:Static fonts:FontAwesomeSolid.Gear}"/>
+    <FontImage x:Key="ChartLine"
+               FontFamily="FontAwesomeSolid"
+               Glyph="{x:Static fonts:FontAwesomeSolid.ChartLine}"/>
+    <FontImage x:Key="Clock"
+               FontFamily="FontAwesomeSolid"
+               Glyph="{x:Static fonts:FontAwesomeSolid.Clock}"/>
+</ResourceDictionary>

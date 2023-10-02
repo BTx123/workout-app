@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             x:Class="WorkoutApp.Views.AboutPage"
+             x:DataType="viewModels:AboutPageViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Margin="{StaticResource Margin}"
+          RowSpacing="{StaticResource Spacing}" ColumnSpacing="{StaticResource Spacing}">
+        <VerticalStackLayout Grid.Row="0">
+            <Label FontSize="Large">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding AppInfo.Name}" 
+                              FontAttributes="Bold" />
+                        <Span Text=" v" />
+                        <Span Text="{Binding AppInfo.VersionString}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label FontSize="Small">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Copyright © 2023 Brian Tom" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1" Background="Red">
+            <Label Text="Changelog" FontSize="Large" />
+            <ScrollView>
+                <!-- TODO -->
+                <CollectionView></CollectionView>
+            </ScrollView>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="2">
+            <Button Text="Visit Website" Command="{Binding VisitWebsiteCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             xmlns:models="clr-namespace:WorkoutApp.Core.Models;assembly=WorkoutApp.Core"
+             x:Class="WorkoutApp.Views.WorkoutDetailsPage"
+             x:DataType="viewModels:WorkoutDetailsViewModel"
+             x:Name="This"
+             Title="{Binding Title}">
+    <ScrollView>
+        <VerticalStackLayout Spacing="{StaticResource Spacing}">
+            <CollectionView ItemsSource="{Binding Workout.SetGroups}">
+                <CollectionView.EmptyView>
+                    <Label Text="No workout selected" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SetGroup">
+                        <Border>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="{StaticResource CornerRadius}" />
+                            </Border.StrokeShape>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Exercise.Name}" />
+                                <CollectionView ItemsSource="{Binding Sets}">
+                                    <CollectionView.EmptyView>
+                                        <Label Text="No sets to display" />
+                                    </CollectionView.EmptyView>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:Set">
+                                            <HorizontalStackLayout Spacing="{StaticResource Spacing}">
+                                                <CheckBox IsChecked="{Binding IsDone}" />
+                                                <Grid>
+                                                    <Button Text="-" />
+                                                    <Label Text="{Binding Repetitions}" />
+                                                    <Button Text="+" />
+                                                </Grid>
+                                                <Grid>
+                                                    <Button Text="-" />
+                                                    <Label Text="{Binding Weight}" />
+                                                    <Button Text="+" />
+                                                </Grid>
+                                                <Button Text="x"></Button>
+                                            </HorizontalStackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                                <Button Text="Add" />
+                                <!--<Button Text="Add" Command="{Binding BindingContext.AddSetCommand, Source={x:Reference This}}" CommandParameter="{Binding }" />-->
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

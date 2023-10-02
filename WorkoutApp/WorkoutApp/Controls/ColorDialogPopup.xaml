@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<views:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:views="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+           xmlns:controls="clr-namespace:WorkoutApp.Controls"
+           xmlns:colorPicker="clr-namespace:Maui.ColorPicker;assembly=Maui.ColorPicker"
+           x:Class="WorkoutApp.Controls.ColorDialogPopup"
+           x:DataType="controls:ColorDialogPopup"
+           x:Name="This"
+           Color="Transparent">
+
+    <Border Stroke="{Binding SelectedColor, Source={x:Reference This}}" StrokeThickness="1">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="{StaticResource CornerRadius}" StrokeThickness="0" />
+        </Border.StrokeShape>
+
+        <Grid RowDefinitions="*,Auto,Auto" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+
+            <Grid.Resources>
+                <Style CanCascade="True" TargetType="{x:Type Label}">
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="HorizontalTextAlignment" Value="Center" />
+                    <Setter Property="FontSize" Value="Small"/>
+                </Style>
+            </Grid.Resources>
+
+            <colorPicker:ColorPicker x:Name="ColorPicker" Grid.Row="0"
+                                     ColorFlowDirection="Horizontal" ColorSpectrumStyle="TintToHueToShadeStyle"
+                                     PointerRingBorderUnits="0.3" PointerRingDiameterUnits="0.7"
+                                     MinimumHeightRequest="{Binding Height, Source={x:Reference ColorGrid}}">
+                <colorPicker:ColorPicker.Behaviors>
+                    <views:EventToCommandBehavior EventName="PickedColorChanged" Command="{Binding PickedColorChangedCommand, Source={x:Reference This}}"
+                                                  CommandParameter="{Binding PickedColor, Source={x:Reference ColorPicker}}" />
+                </colorPicker:ColorPicker.Behaviors>
+            </colorPicker:ColorPicker>
+
+            <Grid x:Name="ColorGrid"
+                  Grid.Row="1" RowDefinitions="Auto,Auto" RowSpacing="{StaticResource Spacing}" ColumnDefinitions="*,*" ColumnSpacing="{StaticResource Spacing}"
+                  Padding="{StaticResource Padding}" BackgroundColor="{Binding SelectedColor, Source={x:Reference This}}">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToHexRgbStringConverter}}"
+                   TextColor="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToColorForTextConverter}}" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToRgbStringConverter}}"
+                   TextColor="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToColorForTextConverter}}" />
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToCmykStringConverter}}"
+                   TextColor="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToColorForTextConverter}}" />
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToHslStringConverter}}"
+                   TextColor="{Binding SelectedColor, Source={x:Reference This}, Converter={StaticResource ColorToColorForTextConverter}}" />
+            </Grid>
+
+            <Grid x:Name="MenuGrid"
+                  Grid.Row="2" ColumnDefinitions="Auto,Auto,*" ColumnSpacing="{StaticResource Spacing}"
+                  Padding="{StaticResource Padding}" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
+                <ContentView Grid.Column="0">
+                    <Label Text="Cancel" TextColor="{Binding BackgroundColor, Source={x:Reference MenuGrid}, Converter={StaticResource ColorToColorForTextConverter}}" />
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CancelDialogCommand, Source={x:Reference This}}" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+
+                <ContentView Grid.Column="1">
+                    <Label Text="Reset" TextColor="{Binding BackgroundColor, Source={x:Reference MenuGrid}, Converter={StaticResource ColorToColorForTextConverter}}" />
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ResetReturnValueCommand, Source={x:Reference This}}" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+
+                <ContentView Grid.Column="2" HorizontalOptions="Fill">
+                    <Label Text="Confirm" TextColor="{Binding BackgroundColor, Source={x:Reference MenuGrid}, Converter={StaticResource ColorToColorForTextConverter}}" HorizontalOptions="End" />
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DismissDialogCommand, Source={x:Reference This}}" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+            </Grid>
+
+        </Grid>
+    </Border>
+
+</views:Popup>

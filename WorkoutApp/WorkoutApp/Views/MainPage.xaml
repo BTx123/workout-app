@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             x:Class="WorkoutApp.Views.MainPage"
+             x:DataType="viewModels:MainPageViewModel"
+             Title="{Binding Title}"
+             x:Name="This">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Plate Calculator" Order="Secondary" Command="{Binding NavigateTo1RmCalculatorCommand}" />
+        <ToolbarItem Text="1RM Calculator" Order="Secondary" Command="{Binding NavigateTo1RmCalculatorCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView Margin="{StaticResource Margin}">
+        <VerticalStackLayout Spacing="{StaticResource Spacing}"
+                             VerticalOptions="Center">
+
+            <Image
+                Source="dotnet_bot.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+            <Label
+                Text="Hello, World!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+            <Label
+                Text="Welcome to .NET Multi-platform App UI"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+            <Button
+                Text="{Binding Text}"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Command="{Binding ClickCommand}"
+                HorizontalOptions="Center" />
+            <Button
+                Text="Reset"
+                SemanticProperties.Hint="Resets the number of times you click"
+                Command="{Binding ResetCommand}"
+                HorizontalOptions="Center" />
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Height: " />
+                        <Span Text="{Binding Height}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Distance: " />
+                        <Span Text="{Binding Distance}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Mass: " />
+                        <Span Text="{Binding Mass}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

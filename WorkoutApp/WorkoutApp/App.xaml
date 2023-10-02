@@ -1,0 +1,38 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:xcConverters="clr-namespace:XCalendar.Maui.Converters;assembly=XCalendar.Maui"
+             xmlns:converters="clr-namespace:WorkoutApp.Converters"
+             x:Class="WorkoutApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/CalendarStyles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <mct:EnumToIntConverter x:Key="EnumToIntConverter" />
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <mct:ColorToColorForTextConverter x:Key="ColorToColorForTextConverter" />
+            <mct:ColorToRgbStringConverter x:Key="ColorToRgbStringConverter" />
+            <mct:ColorToHexRgbStringConverter x:Key="ColorToHexRgbStringConverter" />
+            <mct:ColorToCmykStringConverter x:Key="ColorToCmykStringConverter" />
+            <mct:ColorToHslStringConverter x:Key="ColorToHslStringConverter" />
+            <mct:VariableMultiValueConverter x:Key="AllTrueConverter" ConditionType="All" />
+            <xcConverters:StringCharLimitConverter x:Key="StringCharLimitConverter" />
+            <xcConverters:LocalizeDayOfWeekAndCharLimitConverter x:Key="LocalizeDayOfWeekAndCharLimitConverter" />
+            <converters:MassToValueConverter x:Key="MassToValueConverter" />
+
+            <!-- Spacing -->
+            <Thickness x:Key="Margin">20</Thickness>
+            <Thickness x:Key="Padding">20</Thickness>
+            <system:Double x:Key="Spacing">10</system:Double>
+            <system:Double x:Key="CornerRadius">10</system:Double>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

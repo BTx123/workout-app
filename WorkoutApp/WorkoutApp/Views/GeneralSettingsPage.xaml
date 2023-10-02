@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
+             xmlns:constants="clr-namespace:WorkoutApp.Core.Constants;assembly=WorkoutApp.Core"
+             x:Class="WorkoutApp.Views.GeneralSettingsPage"
+             x:DataType="viewModels:GeneralSettingsPageViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView Margin="{StaticResource Margin}">
+        <VerticalStackLayout Spacing="{StaticResource Spacing}">
+            <VerticalStackLayout.Resources>
+                <Style CanCascade="True" TargetType="{x:Type Grid}">
+                    <Setter Property="ColumnDefinitions" Value="*,*"/>
+                    <!--<Setter Property="RowSpacing" Value="{StaticResource Spacing}"/>-->
+                    <!--<Setter Property="ColumnSpacing" Value="{StaticResource Spacing}"/>-->
+                    <!--<Setter Property="HeightRequest" Value="50"/>-->
+                </Style>
+                <Style CanCascade="True" TargetType="{x:Type Label}">
+                    <Setter Property="VerticalOptions" Value="Center"/>
+                </Style>
+            </VerticalStackLayout.Resources>
+
+            <Grid>  
+                <Label Grid.Column="0" Text="Theme" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AllThemes}"
+                        SelectedIndex="{Binding Theme, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:Theme}}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Theme Color (WIP)" />
+                <Border Grid.Column="1" HeightRequest="40" WidthRequest="40"
+                        HorizontalOptions="Start" VerticalOptions="Center"
+                        BackgroundColor="{Binding ThemeColor}" StrokeThickness="1" Stroke="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="{StaticResource CornerRadius}" StrokeThickness="0" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowThemeColorDialogCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Keep Screen On" />
+                <Switch Grid.Column="1" IsToggled="{Binding KeepScreenOn}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Lock Screen Orientation" />
+                <Switch Grid.Column="1" IsToggled="{Binding LockScreenOrientation}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="First Day of the Week" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AvailableFirstDayOfTheWeeks}"
+                        SelectedIndex="{Binding FirstDayOfTheWeek, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type system:DayOfWeek}}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Distance Unit" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AvailableDistanceUnits}"
+                        SelectedIndex="{Binding DistanceUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:DistanceUnit}}" />
+            </Grid>
+            
+            <Grid>
+                <Label Grid.Column="0" Text="Height Unit" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AvailableHeightUnits}"
+                        SelectedIndex="{Binding HeightUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:HeightUnit}}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Weight Unit" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AvailableMassUnits}"
+                        SelectedIndex="{Binding MassUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:WeightUnit}}" />
+            </Grid>
+
+            <Grid>
+                <Label Grid.Column="0" Text="Default One Rep Max Calculator" />
+                <Picker Grid.Column="1"
+                        ItemsSource="{Binding AvailableOneRepMaxStrategies}"
+                        SelectedIndex="{Binding OneRepMaxStrategy, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:OneRepMaxStrategy}}" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
