@@ -2,8 +2,8 @@
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Constants;
-using WorkoutApp.Core.Database;
+using WorkoutApp.DAL.Constants;
+using WorkoutApp.DAL.Context;
 using WorkoutApp.Services;
 
 namespace WorkoutApp;
@@ -11,7 +11,7 @@ namespace WorkoutApp;
 public partial class App
 {
     public App(
-        IDbContextFactory<WorkoutAppModel> dbContextFactory,
+        IDbContextFactory<WorkoutAppContext> dbContextFactory,
         ISettingsService settingsService,
         IDeviceDisplay deviceDisplay,
         IDisplayOrientationService displayOrientationService,

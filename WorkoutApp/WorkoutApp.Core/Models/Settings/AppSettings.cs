@@ -1,15 +1,14 @@
 ﻿using System.Drawing;
 using UnitsNet;
-using WorkoutApp.Core.Constants;
-using WeightUnit = WorkoutApp.Core.Constants.WeightUnit;
+using WorkoutApp.DAL.Constants;
+using Color = System.Drawing.Color;
 
 namespace WorkoutApp.Core.Models.Settings;
 
 /// <summary>
 /// Application level settings.
 /// </summary>
-[Serializable]
-public class AppSettings
+public class AppSettings : ModelBase
 {
     /// <summary>
     /// Default app settings instance.
@@ -47,17 +46,17 @@ public class AppSettings
     /// <summary>
     /// Mass unit to use.
     /// </summary>
-    public WeightUnit MassUnit { get; set; } = WeightUnit.Pound;
+    public MassType MassType { get; set; } = MassType.Pound;
 
     /// <summary>
     /// Length unit to use.
     /// </summary>
-    public DistanceUnit DistanceUnit { get; set; } = DistanceUnit.Mile;
+    public DistanceType DistanceType { get; set; } = DistanceType.Mile;
 
     /// <summary>
     /// Length unit to use for height.
     /// </summary>
-    public HeightUnit HeightUnit { get; set; } = HeightUnit.Inch;
+    public HeightType HeightType { get; set; } = HeightType.Inch;
 
     /// <summary>
     /// One repetition max strategy to use.
@@ -119,12 +118,4 @@ public class AppSettings
     public SupinationStrategy SupinationStrategy { get; set; } = SupinationStrategy.None;
 
     #endregion
-}
-
-public static class ColorExtensions
-{
-    public static string ToArgbString(this Color color)
-    {
-        return $"#{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}";
-    }
 }

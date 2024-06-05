@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Constants;
+using WorkoutApp.DAL.Constants;
 using WorkoutApp.Services;
 
 namespace WorkoutApp.ViewModels;

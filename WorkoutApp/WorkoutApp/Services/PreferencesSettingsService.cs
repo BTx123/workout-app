@@ -1,7 +1,8 @@
 ﻿using FluentResults;
 using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Constants;
+using WorkoutApp.Core.Extensions;
 using WorkoutApp.Core.Models.Settings;
+using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.Services;
 
@@ -97,56 +98,56 @@ public class PreferencesSettingsService : ServiceBase<PreferencesSettingsService
 
     public event EventHandler<DayOfWeek>? FirstDayOfWeekChanged;
 
-    public DistanceUnit DistanceUnit
+    public DistanceType DistanceType
     {
         get
         {
             var s = Preferences.Get(SettingsKey.DistanceUnit, null);
-            return Enum.TryParse(s, out DistanceUnit value) ? value : AppSettings.Default.DistanceUnit;
+            return Enum.TryParse(s, out DistanceType value) ? value : AppSettings.Default.DistanceType;
         }
         set
         {
             Preferences.Set(SettingsKey.DistanceUnit, value.ToString());
-            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(DistanceUnit), value);
+            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(DistanceType), value);
             DistanceUnitChanged?.Invoke(this, value);
         }
     }
 
-    public event EventHandler<DistanceUnit>? DistanceUnitChanged;
+    public event EventHandler<DistanceType>? DistanceUnitChanged;
 
-    public HeightUnit HeightUnit
+    public HeightType HeightType
     {
         get
         {
             var s = Preferences.Get(SettingsKey.HeightUnit, null);
-            return Enum.TryParse(s, out HeightUnit value) ? value : AppSettings.Default.HeightUnit;
+            return Enum.TryParse(s, out HeightType value) ? value : AppSettings.Default.HeightType;
         }
         set
         {
             Preferences.Set(SettingsKey.HeightUnit, value.ToString());
-            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(HeightUnit), value);
+            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(HeightType), value);
             HeightUnitChanged?.Invoke(this, value);
         }
     }
 
-    public event EventHandler<HeightUnit>? HeightUnitChanged;
+    public event EventHandler<HeightType>? HeightUnitChanged;
 
-    public WeightUnit MassUnit
+    public MassType MassType
     {
         get
         {
             var s = Preferences.Get(SettingsKey.MassUnit, null);
-            return Enum.TryParse(s, out WeightUnit value) ? value : AppSettings.Default.MassUnit;
+            return Enum.TryParse(s, out MassType value) ? value : AppSettings.Default.MassType;
         }
         set
         {
             Preferences.Set(SettingsKey.MassUnit, value.ToString());
-            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(MassUnit), value);
+            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(MassType), value);
             MassUnitChanged?.Invoke(this, value);
         }
     }
 
-    public event EventHandler<WeightUnit>? MassUnitChanged;
+    public event EventHandler<MassType>? MassUnitChanged;
 
     public OneRepMaxStrategy OneRepMaxStrategy
     {

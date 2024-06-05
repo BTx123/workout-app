@@ -1,6 +1,6 @@
-﻿using WorkoutApp.Core.Constants;
-using WorkoutApp.Core.Library;
+﻿using WorkoutApp.Core.Library;
 using WorkoutApp.Core.Strategies.OneRepMax;
+using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.Core.Factories;
 

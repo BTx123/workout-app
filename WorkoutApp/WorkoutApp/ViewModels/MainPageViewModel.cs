@@ -2,9 +2,9 @@ using Microsoft.Extensions.Logging;
 using UnitsNet;
 using UnitsNet.Units;
 using WorkoutApp.Constants;
-using WorkoutApp.Core.Constants;
+using WorkoutApp.Core.Extensions;
+using WorkoutApp.DAL.Constants;
 using WorkoutApp.Services;
-using WeightUnit = WorkoutApp.Core.Constants.WeightUnit;
 
 namespace WorkoutApp.ViewModels;
 
@@ -39,7 +39,7 @@ public partial class MainPageViewModel : ViewModelBase<MainPageViewModel>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Text))]
     private int _count;
-        
+
     [ObservableProperty]
     private Length _height = Length.FromFeet(5);
 
@@ -75,17 +75,17 @@ public partial class MainPageViewModel : ViewModelBase<MainPageViewModel>
 
     #region Event Handlers
 
-    private void SettingsServiceOnDistanceUnitChanged(object? sender, DistanceUnit e)
+    private void SettingsServiceOnDistanceUnitChanged(object? sender, DistanceType e)
     {
         UpdateDistanceUnits(e.ToLengthUnit());
     }
 
-    private void SettingsServiceOnHeightUnitChanged(object? sender, HeightUnit e)
+    private void SettingsServiceOnHeightUnitChanged(object? sender, HeightType e)
     {
         UpdateHeightUnits(e.ToLengthUnit());
     }
 
-    private void SettingsServiceOnMassUnitChanged(object? sender, WeightUnit e)
+    private void SettingsServiceOnMassUnitChanged(object? sender, MassType e)
     {
         UpdateMassUnits(e.ToMassUnit());
     }
@@ -96,16 +96,16 @@ public partial class MainPageViewModel : ViewModelBase<MainPageViewModel>
 
     private void UpdateUnits()
     {
-        UpdateDistanceUnits(SettingsService.DistanceUnit.ToLengthUnit());
-        UpdateHeightUnits(SettingsService.HeightUnit.ToLengthUnit());
-        UpdateMassUnits(SettingsService.MassUnit.ToMassUnit());
+        UpdateDistanceUnits(SettingsService.DistanceType.ToLengthUnit());
+        UpdateHeightUnits(SettingsService.HeightType.ToLengthUnit());
+        UpdateMassUnits(SettingsService.MassType.ToMassUnit());
     }
 
     private void UpdateDistanceUnits(LengthUnit unit)
     {
         Distance = Distance.ToUnit(unit);
     }
-        
+
     private void UpdateHeightUnits(LengthUnit unit)
     {
         Height = Height.ToUnit(unit);

@@ -1,10 +1,13 @@
-﻿namespace WorkoutApp.Core.Models;
+﻿using System.Collections.ObjectModel;
+using WorkoutApp.Core.Database;
 
-public interface ISetGroup
+namespace WorkoutApp.Core.Models;
+
+public interface ISetGroup : IHasId
 {
     string Note { get; set; }
 
     Exercise Exercise { get; set; }
 
-    ICollection<Set> Sets { get; }
+    ObservableCollection<Set> Sets { get; }
 }

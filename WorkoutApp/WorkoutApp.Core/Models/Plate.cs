@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using UnitsNet;
+﻿using UnitsNet;
 using WorkoutApp.Core.Constants;
 
 namespace WorkoutApp.Core.Models;
@@ -8,13 +7,12 @@ public class Plate : IEquatable<Plate>, IComparable<Plate>
 {
     private readonly Mass _weight;
 
-    public Mass Weight
+    public required Mass Weight
     {
         get => _weight;
         init
         {
-            if (value < Mass.Zero)
-                throw new ArgumentException("Plate must have positive, non-zero weight");
+            ArgumentOutOfRangeException.ThrowIfLessThan(value, Mass.Zero);
             _weight = value;
         }
     }
@@ -28,7 +26,7 @@ public class Plate : IEquatable<Plate>, IComparable<Plate>
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Weight.Equals(other.Weight, Unit.MassTolerance);
+        return Weight.Equals(other.Weight, MassConstants.Tolerance);
     }
 
     public override bool Equals(object? obj)
@@ -40,13 +38,13 @@ public class Plate : IEquatable<Plate>, IComparable<Plate>
 
     public override int GetHashCode()
     {
-        return _weight.GetHashCode();
+        return Weight.GetHashCode();
     }
 
     public int CompareTo(Plate? other)
     {
         if (ReferenceEquals(this, other)) return 0;
         if (ReferenceEquals(null, other)) return 1;
-        return _weight.CompareTo(other._weight);
+        return Weight.CompareTo(other.Weight);
     }
 }

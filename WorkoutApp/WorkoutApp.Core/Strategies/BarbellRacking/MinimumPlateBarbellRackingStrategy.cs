@@ -20,7 +20,7 @@ public class MinimumPlateBarbellRackingStrategy : IBarbellRackingStrategy<Barbel
 
         // Return early if barbell weight matches desired weight
         var platesToRack = new Dictionary<Plate, int>();
-        if (actualDesiredWeight.Equals(Mass.Zero, Unit.MassTolerance))
+        if (actualDesiredWeight.Equals(Mass.Zero, MassConstants.Tolerance))
         {
             return Result.Ok(platesToRack);
         }
@@ -32,7 +32,7 @@ public class MinimumPlateBarbellRackingStrategy : IBarbellRackingStrategy<Barbel
             // Get plate count, continue if minimum count of 2 not met
             var plateCount = input.AvailablePlates[plate];
             if (plateCount < 2) continue;
-            
+
             // Compute weight to add per side
             var plateWeight = plate.Weight;
             if (plateWeight <= remainingWeightPerSide)
@@ -45,7 +45,7 @@ public class MinimumPlateBarbellRackingStrategy : IBarbellRackingStrategy<Barbel
             }
 
             // Break out of loop if no more weight needs to be added
-            if (remainingWeightPerSide.Equals(Mass.Zero, Unit.MassTolerance))
+            if (remainingWeightPerSide.Equals(Mass.Zero, MassConstants.Tolerance))
             {
                 break;
             }

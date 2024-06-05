@@ -60,18 +60,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-preview.7.23375.6" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FluentResults" Version="3.15.2" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.4" />
-    <PackageReference Include="NLog.Targets.Seq" Version="3.0.0" />
-    <PackageReference Include="nor0x.Maui.ColorPicker" Version="1.0.1" />
-    <PackageReference Include="UnitsNet" Version="5.34.0" />
-    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.28.0" />
-    <PackageReference Include="XCalendar.Maui" Version="4.5.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
+    <PackageReference Include="NLog.Targets.Seq" Version="4.0.0" />
+    <PackageReference Include="nor0x.Maui.ColorPicker" Version="2.0.1" />
+    <PackageReference Include="UnitsNet" Version="5.50.0" />
+    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.50.0" />
   </ItemGroup>
 
   <!-- Build Properties must be defined within these property groups to ensure successful publishing
@@ -95,15 +94,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MauiXaml Update="Views\WorkoutDetailsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="nlog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Remove="Views\WorkoutDetailsPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\WorkoutDetailsPage.xaml.cs" />
   </ItemGroup>
 
 </Project>

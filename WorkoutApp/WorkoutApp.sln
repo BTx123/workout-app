@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutApp.Core", "WorkoutA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest.WorkoutApp.Core", "UnitTest.WorkoutApp.Core\UnitTest.WorkoutApp.Core.csproj", "{1BDFC5D7-2958-4E41-ADD9-C0754DC50162}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutApp.DAL", "WorkoutApp.DAL\WorkoutApp.DAL.csproj", "{8AE76A27-4AFC-4CDE-8300-FBDD7DFE79B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{1BDFC5D7-2958-4E41-ADD9-C0754DC50162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BDFC5D7-2958-4E41-ADD9-C0754DC50162}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BDFC5D7-2958-4E41-ADD9-C0754DC50162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE76A27-4AFC-4CDE-8300-FBDD7DFE79B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE76A27-4AFC-4CDE-8300-FBDD7DFE79B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE76A27-4AFC-4CDE-8300-FBDD7DFE79B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE76A27-4AFC-4CDE-8300-FBDD7DFE79B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

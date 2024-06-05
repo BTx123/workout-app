@@ -1,5 +1,13 @@
-﻿namespace WorkoutApp.Core.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-public partial class Exercise : Database.Exercise
+namespace WorkoutApp.Core.Models;
+
+[ObservableObject]
+public partial class Exercise : ModelBase, IExercise
 {
+    [ObservableProperty]
+    private string _name = string.Empty;
+
+    [ObservableProperty]
+    private Barbell? _barbell;
 }

@@ -1,10 +1,15 @@
-﻿using WorkoutApp.Core.Factories;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using WorkoutApp.Core.Factories;
 
 namespace WorkoutApp.Core.Models;
 
-public class FiveThreeOneWorkoutPlan : IWorkoutPlan
+[ObservableObject]
+public partial class FiveThreeOneWorkoutPlan : ModelBase, IWorkoutPlan
 {
-    public string Name => "five-three-one-workout-plan";
+    [ObservableProperty]
+    private string _name = "five-three-one-workout-plan";
 
-    public IEnumerable<WorkoutSetup> Workouts { get; init; } = Enumerable.Empty<WorkoutSetup>();
+    [ObservableProperty]
+    private ObservableCollection<WorkoutSetup> _workouts = new();
 }

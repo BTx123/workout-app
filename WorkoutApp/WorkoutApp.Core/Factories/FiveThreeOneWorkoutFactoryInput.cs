@@ -9,7 +9,7 @@
 //    public DateTime StartDay { get; init; } = DateTime.Today;
 
 //    /// <summary>
-//    /// 
+//    ///
 //    /// </summary>
 //    public IDictionary<DayOfWeek, IEnumerable<ExerciseSetup>> WorkoutSetup { get; init; } =
 //        new Dictionary<DayOfWeek, IEnumerable<ExerciseSetup>>();
@@ -20,7 +20,7 @@
 //    public int NumberOfCycles { get; init; } = 0;
 
 //    /// <summary>
-//    /// 
+//    ///
 //    /// </summary>
 //    public PercentageScheme PercentageScheme { get; init; } = PercentageScheme.Standard;
 //}

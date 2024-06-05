@@ -7,37 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FluentResults" Version="3.15.2" />
-    <PackageReference Include="UnitsNet" Version="5.34.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="UnitsNet" Version="5.50.0" />
     <PackageReference Include="XCalendar.Maui" Version="4.5.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="WorkoutAppModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WorkoutAppModel.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="WorkoutAppModel.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>WorkoutAppModel.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Generated\Structs\" />
+    <ProjectReference Include="..\WorkoutApp.DAL\WorkoutApp.DAL.csproj" />
   </ItemGroup>
 
 </Project>

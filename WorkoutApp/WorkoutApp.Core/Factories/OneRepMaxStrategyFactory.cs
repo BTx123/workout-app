@@ -1,6 +1,6 @@
 ﻿using FluentResults;
-using WorkoutApp.Core.Constants;
 using WorkoutApp.Core.Strategies.OneRepMax;
+using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.Core.Factories
 {

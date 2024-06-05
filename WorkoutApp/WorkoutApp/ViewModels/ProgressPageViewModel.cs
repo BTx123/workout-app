@@ -9,22 +9,21 @@ using LiveChartsCore.SkiaSharpView.VisualElements;
 using Microsoft.EntityFrameworkCore;
 using SkiaSharp;
 using UnitsNet;
-using WorkoutApp.Core.Constants;
-using WorkoutApp.Core.Database;
+using WorkoutApp.Core.Extensions;
 using WorkoutApp.Core.Factories;
 using WorkoutApp.Core.Library;
-using WorkoutApp.Core.Models;
 using WorkoutApp.Core.Strategies.OneRepMax;
-using User = WorkoutApp.Core.Models.User;
+using WorkoutApp.DAL.Context;
+using WorkoutApp.DAL.Entities;
 
 namespace WorkoutApp.ViewModels;
 
 public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel>
 {
-    private readonly IDbContextFactory<WorkoutAppModel> _dbContextFactory;
+    private readonly IDbContextFactory<WorkoutAppContext> _dbContextFactory;
     private readonly IOneRepMaxStrategyFactory _oneRepMaxStrategyFactory;
 
-    public ProgressPageViewModel(IDbContextFactory<WorkoutAppModel> dbContextFactory, IOneRepMaxStrategyFactory oneRepMaxStrategyFactory, IDialogService dialogService, ISettingsService settingsService, ILogger<ProgressPageViewModel> logger)
+    public ProgressPageViewModel(IDbContextFactory<WorkoutAppContext> dbContextFactory, IOneRepMaxStrategyFactory oneRepMaxStrategyFactory, IDialogService dialogService, ISettingsService settingsService, ILogger<ProgressPageViewModel> logger)
         : base(dialogService, settingsService, logger)
     {
         _dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
@@ -79,7 +78,7 @@ public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel
                 Series.Add(new LineSeries<DateTimePoint>
                 {
                     Name = exercise.Name,
-                    Values = points.Select(p => new DateTimePoint(p.X, p.Y?.ToUnit(SettingsService.MassUnit.ToMassUnit()).Value)),
+                    Values = points.Select(p => new DateTimePoint(p.X, p.Y?.ToUnit(SettingsService.MassType.ToMassUnit()).Value)),
                 });
             }
         }
@@ -102,13 +101,6 @@ public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel
 
         await using var db = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
-        var user = await db.Users.FirstOrDefaultAsync(user => user.Username == User.DefaultUser, cancellationToken);
-        if (user == null)
-        {
-            Logger.LogError("Default user not found");
-            return new List<Point2D<DateTime, Mass?>>();
-        }
-
         var strategy = SettingsService.OneRepMaxStrategy;
         var factoryResult = _oneRepMaxStrategyFactory.Create(strategy);
         if (!factoryResult.IsSuccess)
@@ -119,12 +111,11 @@ public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel
 
         var oneRepMaxStrategy = factoryResult.Value;
         var data = await db.Sets
-            .Where(s => s.SetGroup.Workout.User == user)
             .Where(s => s.SetGroup.Exercise == exercise)
-            .Where(s => s.SetGroup.Workout.CompletedAt.HasValue)
-            .Where(s => s.SetGroup.Workout.CompletedAt >= start.Value.Date)
-            .Where(s => s.SetGroup.Workout.CompletedAt <= end.Value.Date)
-            .GroupBy(s => s.SetGroup.Workout.CompletedAt!.Value.Date)
+            // .Where(s => s.SetGroup.Workout.StoppedAt)
+            .Where(s => s.SetGroup.Workout.StoppedAt >= start.Value.Date)
+            .Where(s => s.SetGroup.Workout.StoppedAt <= end.Value.Date)
+            .GroupBy(s => s.SetGroup.Workout.StoppedAt.Date)
             .ToListAsync(cancellationToken: cancellationToken);
 
         var points = data
@@ -136,7 +127,7 @@ public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel
                     var oneRepMaxResult = oneRepMaxStrategy.Execute(new OneRepMaxStrategyInput
                     {
                         Repetitions = set.Repetitions,
-                        Weight = Mass.FromKilograms(set.WeightKg)
+                        Weight = Mass.FromKilograms(set.MassKg)
                     });
                     return oneRepMaxResult.IsSuccess ? oneRepMaxResult.Value : Mass.Zero;
                 })

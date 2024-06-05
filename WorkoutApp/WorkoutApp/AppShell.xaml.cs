@@ -1,27 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using UnitsNet;
-using UnitsNet.Units;
-using WorkoutApp.Core.Constants;
-using WorkoutApp.Core.Database;
-using WorkoutApp.Core.Models;
+using WorkoutApp.DAL.Context;
 using WorkoutApp.Services;
-using User = WorkoutApp.Core.Models.User;
 
 namespace WorkoutApp;
 
 public partial class AppShell
 {
     private static readonly Random Random = new();
-    
-    private readonly IDbContextFactory<WorkoutAppModel> _dbContextFactory;
+
+    private readonly IDbContextFactory<WorkoutAppContext> _dbContextFactory;
     private readonly ISettingsService _settingsService;
     private readonly IDeviceDisplay _deviceDisplay;
     private readonly IDisplayOrientationService _displayOrientationService;
     private readonly ILogger<AppShell> _logger;
 
     public AppShell(
-        IDbContextFactory<WorkoutAppModel> dbContextFactory,
+        IDbContextFactory<WorkoutAppContext> dbContextFactory,
         ISettingsService settingsService,
         IDeviceDisplay deviceDisplay,
         IDisplayOrientationService displayOrientationService,
@@ -49,23 +44,23 @@ public partial class AppShell
         LoadLockScreenOrientation(lockScreenOrientation);
 
 #if DEBUG
-        IEnumerable<Set> GetRandomSets(SetGroup group)
-        {
-            var sets = new List<Set>();
-
-            var setCount = Random.NextInt64(1, 10);
-            for (var i = 0; i < setCount; i++)
-            {
-                var repetitions = Random.Next(8, 12);
-                var weight = Mass.FromPounds(Random.Next(45, 315));
-                var set = Set.Create(i, repetitions, weight.ToUnit(MassUnit.Kilogram).Value, DateTime.UtcNow, DateTime.UtcNow, group);
-                set.IsAmrap = Random.NextSingle() >= 0.5;
-                set.IsDone = Random.NextSingle() >= 0.5;
-                sets.Add(set);
-            }
-
-            return sets;
-        }
+        // IEnumerable<Set> GetRandomSets(SetGroup group)
+        // {
+        //     var sets = new List<Set>();
+        //
+        //     var setCount = Random.NextInt64(1, 10);
+        //     for (var i = 0; i < setCount; i++)
+        //     {
+        //         var repetitions = Random.Next(8, 12);
+        //         var weight = Mass.FromPounds(Random.Next(45, 315));
+        //         var set = Set.Create(i, repetitions, weight.ToUnit(MassUnit.Kilogram).Value, DateTime.UtcNow, DateTime.UtcNow, group);
+        //         set.IsAmrap = Random.NextSingle() >= 0.5;
+        //         set.IsDone = Random.NextSingle() >= 0.5;
+        //         sets.Add(set);
+        //     }
+        //
+        //     return sets;
+        // }
 
         _logger.LogInformation("Loading sample data...");
 
@@ -74,43 +69,43 @@ public partial class AppShell
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        var user = User.Create(User.DefaultUser, DateTime.UtcNow, DateTime.UtcNow);
-        db.Users.Add(user);
-
-        var exercises = new List<Exercise>
-        {
-            Exercise.Create("Squat"),
-            Exercise.Create("Bench"),
-            Exercise.Create("Deadlift"),
-        };
-        db.Exercises.AddRange(exercises);
-
-        const int workoutCount = 10;
-        for (var i = 0; i < workoutCount; i++)
-        {
-            var workoutNumber = i + 1;
-
-            var workout = Workout.Create(DateTime.UtcNow - TimeSpan.FromDays(i), $"Workout {workoutNumber}",DateTime.UtcNow, DateTime.UtcNow, user);
-            workout.Note = $"This is a note for workout {workoutNumber}";
-            workout.DurationNs = Duration.FromHours(2).ToUnit(DurationUnit.Nanosecond).Value;
-            foreach (var exercise in exercises)
-            {
-                var group = SetGroup.Create(workout);
-                group.Exercise = exercise;
-                var sets = GetRandomSets(group);
-                foreach (var set in sets)
-                {
-                    group.Sets.Add(set);
-                }
-                workout.SetGroups.Add(group);
-            }
-
-            db.Workouts.Add(workout);
-        }
-
-        db.SaveChanges();
-
-        _logger.LogInformation("Finished loading sample data");
+        // var user = User.Create(User.DefaultUser, DateTime.UtcNow, DateTime.UtcNow);
+        // db.Users.Add(user);
+        //
+        // var exercises = new List<Exercise>
+        // {
+        //     Exercise.Create("Squat"),
+        //     Exercise.Create("Bench"),
+        //     Exercise.Create("Deadlift"),
+        // };
+        // db.Exercises.AddRange(exercises);
+        //
+        // const int workoutCount = 10;
+        // for (var i = 0; i < workoutCount; i++)
+        // {
+        //     var workoutNumber = i + 1;
+        //
+        //     var workout = Workout.Create(DateTime.UtcNow - TimeSpan.FromDays(i), $"Workout {workoutNumber}",DateTime.UtcNow, DateTime.UtcNow, user);
+        //     workout.Note = $"This is a note for workout {workoutNumber}";
+        //     workout.DurationNs = Duration.FromHours(2).ToUnit(DurationUnit.Nanosecond).Value;
+        //     foreach (var exercise in exercises)
+        //     {
+        //         var group = SetGroup.Create(workout);
+        //         group.Exercise = exercise;
+        //         var sets = GetRandomSets(group);
+        //         foreach (var set in sets)
+        //         {
+        //             group.Sets.Add(set);
+        //         }
+        //         workout.SetGroups.Add(group);
+        //     }
+        //
+        //     db.Workouts.Add(workout);
+        // }
+        //
+        // db.SaveChanges();
+        //
+        // _logger.LogInformation("Finished loading sample data");
 #endif
     }
 

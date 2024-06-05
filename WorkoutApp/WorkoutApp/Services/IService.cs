@@ -1,5 +1,4 @@
-﻿using WorkoutApp.Core;
-using WorkoutApp.Core.Library;
+﻿using WorkoutApp.Core.Library;
 
 namespace WorkoutApp.Services;
 

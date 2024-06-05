@@ -1,12 +1,13 @@
 ﻿using UnitsNet;
+using WorkoutApp.Core.Database;
 
 namespace WorkoutApp.Core.Models;
 
-public interface ISet
+public interface ISet : IHasId
 {
-    int Index { get; set; }
+    DateTime StartedAt { get; set; }
 
-    bool IsDone { get; set; }
+    DateTime StoppedAt { get; set; }
 
     int Repetitions { get; set; }
 

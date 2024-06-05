@@ -1,9 +1,10 @@
 ﻿using System.Collections.Concurrent;
+using CommunityToolkit.Maui.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Database;
 using WorkoutApp.Core.Models;
 using WorkoutApp.Core.Models.Calendar;
+using WorkoutApp.DAL.Context;
 using WorkoutApp.Logging;
 using WorkoutApp.Services;
 using XCalendar.Core.Collections;
@@ -15,11 +16,11 @@ namespace WorkoutApp.ViewModels;
 
 public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
 {
-    private readonly IDbContextFactory<WorkoutAppModel> _dbContextFactory;
+    private readonly IDbContextFactory<WorkoutAppContext> _dbContextFactory;
     private readonly ISettingsService _settingsService;
     private static readonly Random Random = new();
 
-    public HistoryPageViewModel(IDbContextFactory<WorkoutAppModel> dbContextFactory, IDialogService dialogService, ISettingsService settingsService, ILogger<HistoryPageViewModel> logger)
+    public HistoryPageViewModel(IDbContextFactory<WorkoutAppContext> dbContextFactory, IDialogService dialogService, ISettingsService settingsService, ILogger<HistoryPageViewModel> logger)
         : base(dialogService, settingsService, logger)
     {
         if (Application.Current == null) throw new Exception("Failed to determine current application");
@@ -188,7 +189,7 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
         try
         {
             await Task.Delay(1, cancellationToken);
-            
+
             if (WorkoutCalendar.NavigatedDate.TryAddMonths(months, out var targetDate))
             {
                 WorkoutCalendar.NavigatedDate = targetDate;
@@ -306,8 +307,16 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
         await using var db = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
 
         var workouts = await db.Workouts
-            .Where(w => w.User.Username == User.DefaultUser)
             .Where(w => w.StartedAt > start && w.StartedAt < end)
+            .Select(w => new Workout
+            {
+                Id = w.Id,
+                Name = w.Name,
+                StartedAt = w.StartedAt,
+                StoppedAt = w.StoppedAt,
+                SetGroups = w.SetGroups.Select(g => g.ToModel()).Cast<ISetGroup>().ToObservableCollection(),
+                Note = w.Note
+            })
             .ToListAsync(cancellationToken: cancellationToken);
 
         return workouts;

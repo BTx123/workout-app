@@ -1,9 +1,11 @@
-﻿using WorkoutApp.Core.Factories;
+﻿using System.Collections.ObjectModel;
+using WorkoutApp.Core.Database;
+using WorkoutApp.Core.Factories;
 using WorkoutApp.Core.Library;
 
 namespace WorkoutApp.Core.Models;
 
-public interface IWorkoutPlan : INamed
+public interface IWorkoutPlan : INamed, IHasId
 {
-    IEnumerable<WorkoutSetup> Workouts { get; }
+    ObservableCollection<WorkoutSetup> Workouts { get; set;  }
 }

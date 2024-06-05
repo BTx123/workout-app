@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Models;
+using WorkoutApp.DAL.Entities;
 using WorkoutApp.Services;
 
 namespace WorkoutApp.ViewModels

@@ -21,7 +21,7 @@ public class BarbellRackingStrategyInput
     public Mass DesiredWeight { get; init; } = Mass.Zero;
 
     /// <summary>
-    /// Allow non-exact rack weight, returning the maximum plates not exceeding <see cref="DesiredWeight"/>). 
+    /// Allow non-exact rack weight, returning the maximum plates not exceeding <see cref="DesiredWeight"/>).
     /// </summary>
     public bool AllowRemainingWeight { get; init; } = false;
 }

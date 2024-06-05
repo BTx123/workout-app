@@ -1,41 +1,24 @@
-﻿using System.ComponentModel;
-using UnitsNet.Units;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using UnitsNet;
-using WorkoutApp.Core.Constants;
 
 namespace WorkoutApp.Core.Models;
 
-public partial class Barbell : Database.Barbell, IBarbell
+[ObservableObject]
+public partial class Barbell : ModelBase, IBarbell
 {
-    public static readonly Barbell StandardBarbell = Create("Standard Barbell", Mass.FromPounds(45).ToUnit(MassUnit.Kilogram).Value);
+    public static readonly Barbell StandardBarbell = new() { Name = "Standard Barbell", Weight = Mass.FromPounds(45) };
 
-    public static readonly Barbell OlympicBarbell = Create("Olympic Barbell", Mass.FromKilograms(20).Value);
+    public static readonly Barbell OlympicBarbell = new() { Name = "Olympic Barbell", Weight = Mass.FromKilograms(20) };
 
-    public static readonly Barbell AlternativeOlympicBarbell = Create("Light Olympic Barbell", Mass.FromKilograms(15).Value);
+    public static readonly Barbell AlternativeOlympicBarbell = new() { Name = "Light Olympic Barbell", Weight = Mass.FromKilograms(15) };
 
-    public static readonly Barbell SafetySquatBar = Create("Safety Squat Bar", Mass.FromPounds(70).ToUnit(MassUnit.Kilogram).Value);
+    public static readonly Barbell SafetySquatBar = new() { Name = "Safety Squat Bar", Weight = Mass.FromPounds(70) };
 
-    public static readonly Barbell EzCurlBar = Create("EZ Curl Bar", Mass.FromPounds(25).ToUnit(MassUnit.Kilogram).Value);
+    public static readonly Barbell EzCurlBar = new() { Name = "EZ Curl Bar", Weight = Mass.FromPounds(25) };
 
-    public Mass Weight
-    {
-        get => Mass.From(WeightKg, MassUnit.Kilogram);
-        set
-        {
-            var mass = value.ToUnit(MassUnit.Kilogram);
-            if (Weight.Equals(mass, Unit.MassTolerance)) return;
-            WeightKg = mass.Value;
-        }
-    }
+    [ObservableProperty]
+    private string _name = string.Empty;
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        switch (e.PropertyName)
-        {
-            case nameof(WeightKg):
-                OnPropertyChanged(nameof(Weight));
-                break;
-        }
-        base.OnPropertyChanged(e);
-    }
+    [ObservableProperty]
+    private Mass _weight;
 }

@@ -1,6 +1,6 @@
-﻿using WorkoutApp.Core.Constants;
-using WorkoutApp.Core.Factories;
+﻿using WorkoutApp.Core.Factories;
 using WorkoutApp.Core.Library;
+using WorkoutApp.DAL.Constants;
 
 namespace UnitTest.WorkoutApp.Core.Factories
 {

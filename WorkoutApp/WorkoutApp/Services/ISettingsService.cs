@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using WorkoutApp.Core.Constants;
+using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.Services;
 
@@ -25,17 +25,17 @@ public interface ISettingsService : IService
 
     event EventHandler<DayOfWeek> FirstDayOfWeekChanged;
 
-    DistanceUnit DistanceUnit { get; set; }
+    DistanceType DistanceType { get; set; }
 
-    event EventHandler<DistanceUnit> DistanceUnitChanged;
+    event EventHandler<DistanceType> DistanceUnitChanged;
 
-    HeightUnit HeightUnit { get; set; }
+    HeightType HeightType { get; set; }
 
-    event EventHandler<HeightUnit> HeightUnitChanged;
+    event EventHandler<HeightType> HeightUnitChanged;
 
-    WeightUnit MassUnit { get; set; }
+    MassType MassType { get; set; }
 
-    event EventHandler<WeightUnit>? MassUnitChanged;
+    event EventHandler<MassType>? MassUnitChanged;
 
     OneRepMaxStrategy OneRepMaxStrategy { get; set; }
 

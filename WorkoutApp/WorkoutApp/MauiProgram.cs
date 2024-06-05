@@ -1,13 +1,12 @@
-﻿using System.Reflection;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using WorkoutApp.Constants;
-using WorkoutApp.Core.Database;
 using WorkoutApp.Core.Factories;
+using WorkoutApp.DAL.Context;
 using WorkoutApp.Services;
 using WorkoutApp.ViewModels;
 using WorkoutApp.Views;
@@ -67,12 +66,12 @@ public static class MauiProgram
             Cache = SqliteCacheMode.Private,
             DataSource = Path.Combine(FileSystem.Current.AppDataDirectory, "workout-app.db"),
             DefaultTimeout = 30,
-            //ForeignKeys = 
+            //ForeignKeys =
             Mode = SqliteOpenMode.ReadWriteCreate,
-            //Password = 
+            //Password =
         }.ToString();
 
-        builder.Services.AddDbContextFactory<WorkoutAppModel>(options =>
+        builder.Services.AddDbContextFactory<WorkoutAppContext>(options =>
         {
             options.UseSqlite(connectionString);
         }, ServiceLifetime.Scoped);
@@ -81,7 +80,7 @@ public static class MauiProgram
     }
 
     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
-    { 
+    {
         builder.Services.AddSingleton<MainPageViewModel>();
         builder.Services.AddTransient<OneRepMaxCalculatorViewModel>();
         builder.Services.AddSingleton<ProgressPageViewModel>();

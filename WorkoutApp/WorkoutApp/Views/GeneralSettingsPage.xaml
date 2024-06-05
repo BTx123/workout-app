@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
-             xmlns:constants="clr-namespace:WorkoutApp.Core.Constants;assembly=WorkoutApp.Core"
+             xmlns:constants="clr-namespace:WorkoutApp.DAL.Constants;assembly=WorkoutApp.DAL"
              x:Class="WorkoutApp.Views.GeneralSettingsPage"
              x:DataType="viewModels:GeneralSettingsPageViewModel"
              Title="{Binding Title}">
@@ -22,14 +22,14 @@
                 </Style>
             </VerticalStackLayout.Resources>
 
-            <Grid>  
+            <Grid ColumnDefinitions="*,*">  
                 <Label Grid.Column="0" Text="Theme" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AllThemes}"
                         SelectedIndex="{Binding Theme, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:Theme}}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Theme Color (WIP)" />
                 <Border Grid.Column="1" HeightRequest="40" WidthRequest="40"
                         HorizontalOptions="Start" VerticalOptions="Center"
@@ -43,45 +43,45 @@
                 </Border>
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Keep Screen On" />
                 <Switch Grid.Column="1" IsToggled="{Binding KeepScreenOn}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Lock Screen Orientation" />
                 <Switch Grid.Column="1" IsToggled="{Binding LockScreenOrientation}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="First Day of the Week" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AvailableFirstDayOfTheWeeks}"
                         SelectedIndex="{Binding FirstDayOfTheWeek, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type system:DayOfWeek}}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Distance Unit" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AvailableDistanceUnits}"
-                        SelectedIndex="{Binding DistanceUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:DistanceUnit}}" />
+                        SelectedIndex="{Binding DistanceType, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:DistanceType}}" />
             </Grid>
             
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Height Unit" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AvailableHeightUnits}"
-                        SelectedIndex="{Binding HeightUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:HeightUnit}}" />
+                        SelectedIndex="{Binding HeightType, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:HeightType}}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Weight Unit" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AvailableMassUnits}"
-                        SelectedIndex="{Binding MassUnit, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:WeightUnit}}" />
+                        SelectedIndex="{Binding MassType, Converter={StaticResource EnumToIntConverter}, ConverterParameter={x:Type constants:MassType}}" />
             </Grid>
 
-            <Grid>
+            <Grid ColumnDefinitions="*,*">
                 <Label Grid.Column="0" Text="Default One Rep Max Calculator" />
                 <Picker Grid.Column="1"
                         ItemsSource="{Binding AvailableOneRepMaxStrategies}"

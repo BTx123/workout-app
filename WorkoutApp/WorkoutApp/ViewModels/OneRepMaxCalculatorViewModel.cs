@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using UnitsNet;
-using WorkoutApp.Core.Constants;
+using UnitsNet.Units;
 using WorkoutApp.Core.Factories;
 using WorkoutApp.Core.Library;
 using WorkoutApp.Core.Strategies.OneRepMax;
 using WorkoutApp.Services;
-using MassUnit = UnitsNet.Units.MassUnit;
+using WorkoutApp.Core.Extensions;
+using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.ViewModels
 {
@@ -26,7 +27,7 @@ namespace WorkoutApp.ViewModels
             _strategy = SettingsService.OneRepMaxStrategy;
             _repetitions = 0;
             _weightLifted = 0;
-            _weightLiftedUnit = SettingsService.MassUnit.ToMassUnit();
+            _weightLiftedUnit = SettingsService.MassType.ToMassUnit();
         }
 
         #region Properties
@@ -84,7 +85,7 @@ namespace WorkoutApp.ViewModels
 
         #region Event Handlers
 
-        private void SettingsServiceOnMassUnitChanged(object? sender, Core.Constants.WeightUnit e)
+        private void SettingsServiceOnMassUnitChanged(object? sender, MassType e)
         {
             WeightLiftedUnit = e.ToMassUnit();
         }

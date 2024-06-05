@@ -1,5 +1,4 @@
 ﻿using WorkoutApp.Core.Library;
-using WorkoutApp.Core.Models;
 
 namespace WorkoutApp.Core.Factories;
 

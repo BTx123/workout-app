@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using WorkoutApp.Core.Library;
+﻿using WorkoutApp.Core.Library;
 using WorkoutApp.Core.Models;
 
 namespace WorkoutApp.Core.Strategies.BarbellRacking;

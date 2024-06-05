@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using WorkoutApp.Core.Constants;
+using WorkoutApp.DAL.Constants;
 using WorkoutApp.Logging;
 using WorkoutApp.Services;
 
@@ -19,9 +19,9 @@ public partial class GeneralSettingsPageViewModel : ViewModelBase<GeneralSetting
         _keepScreenOn = SettingsService.KeepScreenOn;
         _lockScreenOrientation = SettingsService.LockScreenOrientation;
         _firstDayOfTheWeek = SettingsService.FirstDayOfTheWeek;
-        _massUnit = SettingsService.MassUnit;
-        _distanceUnit = SettingsService.DistanceUnit;
-        _heightUnit = SettingsService.HeightUnit;
+        _massType = SettingsService.MassType;
+        _distanceType = SettingsService.DistanceType;
+        _heightType = SettingsService.HeightType;
         _oneRepMaxStrategy = SettingsService.OneRepMaxStrategy;
     }
 
@@ -77,33 +77,33 @@ public partial class GeneralSettingsPageViewModel : ViewModelBase<GeneralSetting
     }
 
     [ObservableProperty]
-    private WeightUnit _massUnit;
+    private MassType _massType;
 
-    public IReadOnlyList<string> AvailableMassUnits { get; } = Enum.GetNames<WeightUnit>();
+    public IReadOnlyList<string> AvailableMassUnits { get; } = Enum.GetNames<MassType>();
 
-    partial void OnMassUnitChanged(WeightUnit value)
+    partial void OnMassTypeChanged(MassType value)
     {
-        SettingsService.MassUnit = value;
+        SettingsService.MassType = value;
     }
 
     [ObservableProperty]
-    private DistanceUnit _distanceUnit;
+    private DistanceType _distanceType;
 
-    public IReadOnlyList<string> AvailableDistanceUnits { get; } = Enum.GetNames<DistanceUnit>();
+    public IReadOnlyList<string> AvailableDistanceUnits { get; } = Enum.GetNames<DistanceType>();
 
-    partial void OnDistanceUnitChanged(DistanceUnit value)
+    partial void OnDistanceTypeChanged(DistanceType value)
     {
-        SettingsService.DistanceUnit = value;
+        SettingsService.DistanceType = value;
     }
 
     [ObservableProperty]
-    private HeightUnit _heightUnit;
+    private HeightType _heightType;
 
-    public IReadOnlyList<string> AvailableHeightUnits { get; } = Enum.GetNames<HeightUnit>();
+    public IReadOnlyList<string> AvailableHeightUnits { get; } = Enum.GetNames<HeightType>();
 
-    partial void OnHeightUnitChanged(HeightUnit value)
+    partial void OnHeightTypeChanged(HeightType value)
     {
-        SettingsService.HeightUnit = value;
+        SettingsService.HeightType = value;
     }
 
     [ObservableProperty]

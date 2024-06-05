@@ -129,7 +129,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var result = strategy.Execute(input);
         Assert.True(result.IsFailed);
     }
-    
+
     [Fact]
     public void Execute_NoPlatesAllowRemaining_Ok()
     {
@@ -255,7 +255,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.Create("None", 0),
+            Barbell = new Barbell {Name = "None", Weight = Mass.FromPounds(0) },
             AvailablePlates = new Dictionary<Plate, int>
             {
                 { new Plate { Weight = Mass.FromKilograms(1) }, desiredWeight - 1 },

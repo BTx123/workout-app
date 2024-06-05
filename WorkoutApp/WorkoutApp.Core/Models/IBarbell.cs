@@ -1,10 +1,10 @@
 ﻿using UnitsNet;
+using WorkoutApp.Core.Database;
+using WorkoutApp.Core.Library;
 
 namespace WorkoutApp.Core.Models;
 
-public interface IBarbell
+public interface IBarbell : IHasId, INamed
 {
-    public string Name { get; set; }
-
     public Mass Weight { get; set; }
 }
