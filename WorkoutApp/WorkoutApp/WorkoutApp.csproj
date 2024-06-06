@@ -8,10 +8,10 @@
 
     <!-- Note for MacCatalyst:
     The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
-    When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifer>.
+    When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
     The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
     either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-    <!-- ex. <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+    <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
     <OutputType>Exe</OutputType>
     <RootNamespace>WorkoutApp</RootNamespace>
@@ -25,7 +25,6 @@
 
     <!-- App Identifier -->
     <ApplicationId>com.brian-tom.workout-app</ApplicationId>
-    <ApplicationIdGuid>ecbc88ba-e025-4e16-beed-ea83ce93a75d</ApplicationIdGuid>
 
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -48,7 +47,7 @@
 
     <!-- Images -->
     <MauiImage Include="Resources\Images\*" />
-    <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+    <MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185"/>
 
     <!-- Custom Fonts -->
     <MauiFont Include="Resources\Fonts\*" />
@@ -72,17 +71,6 @@
     <PackageReference Include="UnitsNet" Version="5.50.0" />
     <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.50.0" />
   </ItemGroup>
-
-  <!-- Build Properties must be defined within these property groups to ensure successful publishing
-       to the Mac App Store. See: https://aka.ms/maui-publish-app-store#define-build-properties-in-your-project-file -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Debug'">
-    <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.Debug.plist</CodesignEntitlements>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst')) and '$(Configuration)' == 'Release'">
-    <CodesignEntitlements>Platforms/MacCatalyst/Entitlements.Release.plist</CodesignEntitlements>
-    <UseHardenedRuntime>true</UseHardenedRuntime>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WorkoutApp.Core\WorkoutApp.Core.csproj" />
