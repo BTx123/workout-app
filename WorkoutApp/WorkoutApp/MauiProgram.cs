@@ -61,7 +61,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDisplayOrientationService, DisplayOrientationService>();
         builder.Services.AddSingleton<IOneRepMaxStrategyFactory, OneRepMaxStrategyFactory>();
 
-        var connectionString = new SqliteConnectionStringBuilder()
+        var connectionString = new SqliteConnectionStringBuilder
         {
             Cache = SqliteCacheMode.Private,
             DataSource = Path.Combine(FileSystem.Current.AppDataDirectory, "workout-app.db"),

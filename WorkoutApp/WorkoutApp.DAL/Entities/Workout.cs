@@ -11,7 +11,7 @@ public class Workout : EntityBase
 
     public DateTime StoppedAt { get; set; }
 
-    public ICollection<SetGroup> SetGroups { get; set; } = new List<SetGroup>();
+    public ICollection<SetGroup> SetGroups { get; set; }
 
     [MaxLength(1000)]
     public string Note { get; set; } = string.Empty;
