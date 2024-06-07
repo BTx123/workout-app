@@ -1,4 +1,6 @@
 ﻿using FluentResults;
+using UnitsNet;
+using WorkoutApp.Core.Models;
 using WorkoutApp.DAL.Constants;
 
 namespace WorkoutApp.Services;
@@ -39,7 +41,11 @@ public interface ISettingsService : IService
 
     OneRepMaxStrategy OneRepMaxStrategy { get; set; }
 
-    event EventHandler<OneRepMaxStrategy> OneRepMaxStrategyChanged;
+    event EventHandler<OneRepMaxStrategy>? OneRepMaxStrategyChanged;
+
+    Mass DefaultBarbellWeight { get; set; }
+
+    event EventHandler<Mass>? DefaultBarbellWeightChanged;
 
     Result Reset();
 }

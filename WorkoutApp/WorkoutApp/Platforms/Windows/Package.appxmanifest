@@ -11,8 +11,8 @@
   <mp:PhoneIdentity PhoneProductId="68B516E2-AB5B-42C5-84B5-9ED5ECA74C86" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>$placeholder$</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
+    <DisplayName>Workout App</DisplayName>
+    <PublisherDisplayName>Brian Tom</PublisherDisplayName>
     <Logo>$placeholder$.png</Logo>
   </Properties>
 

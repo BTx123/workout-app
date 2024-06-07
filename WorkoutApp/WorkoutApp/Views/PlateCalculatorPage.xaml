@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="using:WorkoutApp.ViewModels"
+             xmlns:models="clr-namespace:WorkoutApp.Core.Models;assembly=WorkoutApp.Core"
+             x:Class="WorkoutApp.Views.PlateCalculatorPage"
+             x:DataType="viewModels:PlateCalculatorPageViewModel"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+
+        <ScrollView Margin="{StaticResource Margin}">
+            <VerticalStackLayout Spacing="{StaticResource Spacing}">
+
+                <VerticalStackLayout.Resources>
+                    <Style CanCascade="True" TargetType="{x:Type Label}">
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="FontSize" Value="Medium" />
+                    </Style>
+                    <Style CanCascade="True" TargetType="{x:Type Entry}">
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="FontSize" Value="Medium" />
+                    </Style>
+                </VerticalStackLayout.Resources>
+
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource Spacing}">
+                    <Label Grid.Column="0" Text="Desired Weight:" />
+                    <Entry Grid.Column="1" Text="{Binding RackingWeight}" Keyboard="Numeric" ReturnType="Done" />
+                    <Label Grid.Column="2" Text="{Binding RackingWeightUnitString}" />
+                </Grid>
+                
+                <ListView ItemsSource="{Binding PlateCounts}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell x:DataType="models:PlateCount">
+                                <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto"
+                                      RowSpacing="{StaticResource Spacing}" ColumnSpacing="{StaticResource Spacing}"
+                                      Padding="{StaticResource Padding}">
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Weight}"
+                                           FontAttributes="Bold" />
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Count, StringFormat='{0}x'}"
+                                           FontAttributes="Italic"
+                                           VerticalOptions="End" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>

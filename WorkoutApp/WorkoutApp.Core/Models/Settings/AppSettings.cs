@@ -78,7 +78,10 @@ public class AppSettings : ModelBase
         Barbell.EzCurlBar
     };
 
-    public Barbell DefaultBarbell { get; set; } = Barbell.StandardBarbell;
+    /// <summary>
+    /// Default barbell weight.
+    /// </summary>
+    public Mass DefaultBarbellWeight { get; set; } = Barbell.StandardBarbell.Weight;
 
     /// <summary>
     /// Available plates for loading barbells.

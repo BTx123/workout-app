@@ -30,13 +30,11 @@ public static class SettingsKey
 
     #region Gym Settings
 
-    public const string GymSettings = "gym-settings";
+    public const string DefaultBarbellWeightKg = "default-barbell-weight-kg";
 
     #endregion
 
     #region Workout Settings
-
-    public const string WorkoutSettings = "workout-settings";
 
     #endregion
 }

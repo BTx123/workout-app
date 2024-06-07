@@ -6,14 +6,14 @@ namespace WorkoutApp.Core.Strategies.BarbellRacking;
 public class BarbellRackingStrategyInput
 {
     /// <summary>
-    /// The barbell to use.
+    /// The barbell weight to use.
     /// </summary>
-    public IBarbell Barbell { get; init; } = Models.Barbell.StandardBarbell;
+    public Mass BarbellWeight { get; init; } = Barbell.StandardBarbell.Weight;
 
     /// <summary>
     /// The collection of available plates for racking.
     /// </summary>
-    public IDictionary<Plate, int> AvailablePlates { get; init; } = new Dictionary<Plate, int>();
+    public IDictionary<Mass, int> AvailablePlates { get; init; } = new Dictionary<Mass, int>();
 
     /// <summary>
     /// The desired total weight (barbell + plates).

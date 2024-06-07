@@ -8,46 +8,46 @@ namespace UnitTest.WorkoutApp.Core.Strategies;
 
 public class MinimumPlateBarbellRackingStrategyTests
 {
-    private readonly IDictionary<Plate, int> _standardAvailablePlates = new Dictionary<Plate, int>
+    private readonly IDictionary<Mass, int> _standardAvailablePlates = new Dictionary<Mass, int>
     {
-        { new Plate { Weight = Mass.FromPounds(45) }, 100 },
-        { new Plate { Weight = Mass.FromPounds(35) }, 100 },
-        { new Plate { Weight = Mass.FromPounds(25) }, 100 },
-        { new Plate { Weight = Mass.FromPounds(10) }, 100 },
-        { new Plate { Weight = Mass.FromPounds(5) }, 100 },
-        { new Plate { Weight = Mass.FromPounds(2.5) }, 100 },
+        { Mass.FromPounds(45) , 100 },
+        { Mass.FromPounds(35), 100 },
+        { Mass.FromPounds(25), 100 },
+        { Mass.FromPounds(10), 100 },
+        { Mass.FromPounds(5), 100 },
+        { Mass.FromPounds(2.5), 100 },
     };
 
-    private readonly IDictionary<Plate, int> _olympicAvailablePlates = new Dictionary<Plate, int>
+    private readonly IDictionary<Mass, int> _olympicAvailablePlates = new Dictionary<Mass, int>
     {
-        { new Plate { Weight = Mass.FromKilograms(20) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(17.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(15) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(12.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(10) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(7.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(2.5) }, 100 },
+        { Mass.FromKilograms(20), 100 },
+        { Mass.FromKilograms(17.5), 100 },
+        { Mass.FromKilograms(15), 100 },
+        { Mass.FromKilograms(12.5), 100 },
+        { Mass.FromKilograms(10), 100 },
+        { Mass.FromKilograms(7.5), 100 },
+        { Mass.FromKilograms(5), 100 },
+        { Mass.FromKilograms(2.5), 100 },
     };
 
-    private readonly IDictionary<Plate, int> _alternativeOlympicAvailablePlates = new Dictionary<Plate, int>
+    private readonly IDictionary<Mass, int> _alternativeOlympicAvailablePlates = new Dictionary<Mass, int>
     {
-        { new Plate { Weight = Mass.FromKilograms(20) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(18.75) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(17.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(16.25) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(15) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(13.75) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(12.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(11.25) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(10) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(8.75) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(7.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(6.25) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(4.75) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(2.5) }, 100 },
-        { new Plate { Weight = Mass.FromKilograms(1.25) }, 100 },
+        { Mass.FromKilograms(20), 100 },
+        { Mass.FromKilograms(18.75), 100 },
+        { Mass.FromKilograms(17.5), 100 },
+        { Mass.FromKilograms(16.25), 100 },
+        { Mass.FromKilograms(15), 100 },
+        { Mass.FromKilograms(13.75), 100 },
+        { Mass.FromKilograms(12.5), 100 },
+        { Mass.FromKilograms(11.25), 100 },
+        { Mass.FromKilograms(10), 100 },
+        { Mass.FromKilograms(8.75), 100 },
+        { Mass.FromKilograms(7.5), 100 },
+        { Mass.FromKilograms(6.25), 100 },
+        { Mass.FromKilograms(5), 100 },
+        { Mass.FromKilograms(4.75), 100 },
+        { Mass.FromKilograms(2.5), 100 },
+        { Mass.FromKilograms(1.25), 100 },
     };
 
     private ITestOutputHelper Output { get; }
@@ -62,11 +62,11 @@ public class MinimumPlateBarbellRackingStrategyTests
         return new MinimumPlateBarbellRackingStrategy();
     }
 
-    private static string PlateDictionaryToString(IDictionary<Plate, int> dictionary)
+    private static string MassDictionaryToString(IDictionary<Mass, int> dictionary)
     {
         if (dictionary.Count == 0) return "{ }";
 
-        var s = dictionary.Select(d => $"{d.Value}x{d.Key.Weight}");
+        var s = dictionary.Select(d => $"{d.Value}x{d.Key}");
         return $"{{ {string.Join(", ", s)} }}";
     }
 
@@ -76,7 +76,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
             AvailablePlates = _olympicAvailablePlates,
             DesiredWeight = Mass.FromKilograms(0)
         };
@@ -91,7 +91,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.AlternativeOlympicBarbell,
+            BarbellWeight = Barbell.AlternativeOlympicBarbell.Weight,
             AvailablePlates = _alternativeOlympicAvailablePlates,
             DesiredWeight = Mass.FromKilograms(-10)
         };
@@ -106,7 +106,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
             AvailablePlates = _olympicAvailablePlates,
             DesiredWeight = Barbell.OlympicBarbell.Weight / 2
         };
@@ -121,8 +121,8 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
-            AvailablePlates = new Dictionary<Plate, int>(),
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
+            AvailablePlates = new Dictionary<Mass, int>(),
             DesiredWeight = Mass.FromKilograms(100)
         };
 
@@ -136,8 +136,8 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
-            AvailablePlates = new Dictionary<Plate, int>(),
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
+            AvailablePlates = new Dictionary<Mass, int>(),
             DesiredWeight = Mass.FromKilograms(100),
             AllowRemainingWeight = true
         };
@@ -152,8 +152,8 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
-            AvailablePlates = new Dictionary<Plate, int>(),
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
+            AvailablePlates = new Dictionary<Mass, int>(),
             DesiredWeight = Barbell.OlympicBarbell.Weight
         };
 
@@ -161,7 +161,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         Assert.True(result.IsSuccess, result.ErrorMessage());
 
         var solution = result.Value;
-        Output.WriteLine(PlateDictionaryToString(solution));
+        Output.WriteLine(MassDictionaryToString(solution));
         Assert.Empty(solution);
     }
 
@@ -171,7 +171,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.OlympicBarbell,
+            BarbellWeight = Barbell.OlympicBarbell.Weight,
             AvailablePlates = _olympicAvailablePlates,
             DesiredWeight = Mass.FromKilograms(100)
         };
@@ -179,12 +179,12 @@ public class MinimumPlateBarbellRackingStrategyTests
         var result = strategy.Execute(input);
         Assert.True(result.IsSuccess, result.ErrorMessage());
 
-        var expected = new Dictionary<Plate, int>
+        var expected = new Dictionary<Mass, int>
         {
-            { new Plate { Weight = Mass.FromKilograms(20) }, 4 },
+            { Mass.FromKilograms(20), 4 },
         };
         var solution = result.Value;
-        Output.WriteLine(PlateDictionaryToString(solution));
+        Output.WriteLine(MassDictionaryToString(solution));
         foreach (var (key, value) in expected)
         {
             Assert.Contains(key, solution);
@@ -198,7 +198,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.AlternativeOlympicBarbell,
+            BarbellWeight = Barbell.AlternativeOlympicBarbell.Weight,
             AvailablePlates = _alternativeOlympicAvailablePlates,
             DesiredWeight = Mass.FromKilograms(65)
         };
@@ -206,13 +206,13 @@ public class MinimumPlateBarbellRackingStrategyTests
         var result = strategy.Execute(input);
         Assert.True(result.IsSuccess, result.ErrorMessage());
 
-        var expected = new Dictionary<Plate, int>
+        var expected = new Dictionary<Mass, int>
         {
-            { new Plate { Weight = Mass.FromKilograms(20) }, 2 },
-            { new Plate { Weight = Mass.FromKilograms(5) }, 2 },
+            { Mass.FromKilograms(20), 2 },
+            { Mass.FromKilograms(5), 2 },
         };
         var solution = result.Value;
-        Output.WriteLine(PlateDictionaryToString(solution));
+        Output.WriteLine(MassDictionaryToString(solution));
         foreach (var (key, value) in expected)
         {
             Assert.Contains(key, solution);
@@ -226,7 +226,7 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = Barbell.StandardBarbell,
+            BarbellWeight = Barbell.StandardBarbell.Weight,
             AvailablePlates = _standardAvailablePlates,
             DesiredWeight = Mass.FromPounds(275)
         };
@@ -234,13 +234,13 @@ public class MinimumPlateBarbellRackingStrategyTests
         var result = strategy.Execute(input);
         Assert.True(result.IsSuccess, result.ErrorMessage());
 
-        var expected = new Dictionary<Plate, int>
+        var expected = new Dictionary<Mass, int>
         {
-            { new Plate { Weight = Mass.FromPounds(45) }, 4 },
-            { new Plate { Weight = Mass.FromPounds(25) }, 2 },
+            { Mass.FromPounds(45), 4 },
+            { Mass.FromPounds(25), 2 },
         };
         var solution = result.Value;
-        Output.WriteLine(PlateDictionaryToString(solution));
+        Output.WriteLine(MassDictionaryToString(solution));
         foreach (var (key, value) in expected)
         {
             Assert.Contains(key, solution);
@@ -255,10 +255,10 @@ public class MinimumPlateBarbellRackingStrategyTests
         var strategy = GetStrategy();
         var input = new BarbellRackingStrategyInput
         {
-            Barbell = new Barbell {Name = "None", Weight = Mass.FromPounds(0) },
-            AvailablePlates = new Dictionary<Plate, int>
+            BarbellWeight = Mass.FromPounds(0),
+            AvailablePlates = new Dictionary<Mass, int>
             {
-                { new Plate { Weight = Mass.FromKilograms(1) }, desiredWeight - 1 },
+                { Mass.FromKilograms(1), desiredWeight - 1 },
             },
             DesiredWeight = Mass.FromKilograms(desiredWeight)
         };

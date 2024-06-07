@@ -4,8 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:WorkoutApp.ViewModels"
              x:Class="WorkoutApp.Views.OneRepMaxCalculatorPage"
-             x:DataType="viewModels:OneRepMaxCalculatorViewModel"
-             Title="1RM Calculator">
+             x:DataType="viewModels:OneRepMaxCalculatorPageViewModel"
+             Title="{Binding Title}">
     <ContentPage.Content>
 
         <ScrollView Margin="{StaticResource Margin}">

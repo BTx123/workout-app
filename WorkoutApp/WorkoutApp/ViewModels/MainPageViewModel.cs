@@ -10,10 +10,12 @@ namespace WorkoutApp.ViewModels;
 
 public partial class MainPageViewModel : ViewModelBase<MainPageViewModel>
 {
-    public MainPageViewModel(IDialogService dialogService,
+    public MainPageViewModel(IAppInfo appInfo, IDialogService dialogService,
         ISettingsService settingsService, ILogger<MainPageViewModel> logger)
         : base(dialogService, settingsService, logger)
     {
+        Title = appInfo.Name;
+
         SettingsService.DistanceUnitChanged += SettingsServiceOnDistanceUnitChanged;
         SettingsService.HeightUnitChanged += SettingsServiceOnHeightUnitChanged;
         SettingsService.MassUnitChanged += SettingsServiceOnMassUnitChanged;
@@ -69,6 +71,12 @@ public partial class MainPageViewModel : ViewModelBase<MainPageViewModel>
     public async Task NavigateTo1RmCalculator(CancellationToken cancellationToken = default)
     {
         await Shell.Current.GoToAsync(RouteKeys.OneRepMaxCalculator);
+    }
+
+    [RelayCommand]
+    public async Task NavigateToPlateCalculator(CancellationToken cancellationToken = default)
+    {
+        await Shell.Current.GoToAsync(RouteKeys.PlateCalculator);
     }
 
     #endregion

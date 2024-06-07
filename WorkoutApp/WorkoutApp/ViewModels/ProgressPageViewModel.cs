@@ -28,6 +28,8 @@ public partial class ProgressPageViewModel : ViewModelBase<ProgressPageViewModel
     {
         _dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
         _oneRepMaxStrategyFactory = oneRepMaxStrategyFactory;
+
+        Title = "Progress";
     }
 
     public ObservableCollection<ISeries> Series { get; set; } = new()

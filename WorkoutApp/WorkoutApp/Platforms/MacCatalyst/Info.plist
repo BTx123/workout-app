@@ -29,5 +29,7 @@
 	<array>
 		<string>fetch</string>
 	</array>
+	<key>CFBundleDisplayName</key>
+	<string>Workout App</string>
 </dict>
 </plist>

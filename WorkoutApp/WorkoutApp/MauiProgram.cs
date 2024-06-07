@@ -6,6 +6,7 @@ using NLog.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using WorkoutApp.Constants;
 using WorkoutApp.Core.Factories;
+using WorkoutApp.Core.Strategies.BarbellRacking;
 using WorkoutApp.DAL.Context;
 using WorkoutApp.Services;
 using WorkoutApp.ViewModels;
@@ -38,7 +39,7 @@ public static class MauiProgram
         return builder.Build();
     }
 
-    public static MauiAppBuilder RegisterLogging(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterLogging(this MauiAppBuilder builder)
     {
 #if DEBUG
         builder.Logging.AddDebug();
@@ -48,7 +49,7 @@ public static class MauiProgram
         return builder;
     }
 
-    public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IAppInfo>(AppInfo.Current);
         builder.Services.AddSingleton<IDeviceDisplay>(DeviceDisplay.Current);
@@ -60,6 +61,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IDialogService, DialogService>();
         builder.Services.AddSingleton<IDisplayOrientationService, DisplayOrientationService>();
         builder.Services.AddSingleton<IOneRepMaxStrategyFactory, OneRepMaxStrategyFactory>();
+        builder.Services.AddSingleton<IBarbellRackingStrategy<BarbellRackingStrategyInput>, MinimumPlateBarbellRackingStrategy>();
 
         var connectionString = new SqliteConnectionStringBuilder
         {
@@ -74,15 +76,19 @@ public static class MauiProgram
         builder.Services.AddDbContextFactory<WorkoutAppContext>(options =>
         {
             options.UseSqlite(connectionString);
+#if DEBUG
+            options.EnableSensitiveDataLogging();
+#endif
         }, ServiceLifetime.Scoped);
 
         return builder;
     }
 
-    public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<MainPageViewModel>();
-        builder.Services.AddTransient<OneRepMaxCalculatorViewModel>();
+        builder.Services.AddTransient<OneRepMaxCalculatorPageViewModel>();
+        builder.Services.AddTransient<PlateCalculatorPageViewModel>();
         builder.Services.AddSingleton<ProgressPageViewModel>();
         builder.Services.AddSingleton<HistoryPageViewModel>();
         builder.Services.AddSingleton<SettingsPageViewModel>();
@@ -92,10 +98,11 @@ public static class MauiProgram
         return builder;
     }
 
-    public static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<OneRepMaxCalculatorPage>();
+        builder.Services.AddTransient<PlateCalculatorPage>();
         builder.Services.AddSingleton<ProgressPage>();
         builder.Services.AddSingleton<HistoryPage>();
         builder.Services.AddSingleton<SettingsPage>();
@@ -103,6 +110,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AboutPage>();
 
         Routing.RegisterRoute(RouteKeys.GeneralSettings, typeof(GeneralSettingsPage));
+        Routing.RegisterRoute(RouteKeys.PlateCalculator, typeof(PlateCalculatorPage));
         Routing.RegisterRoute(RouteKeys.OneRepMaxCalculator, typeof(OneRepMaxCalculatorPage));
         Routing.RegisterRoute(RouteKeys.About, typeof(AboutPage));
 

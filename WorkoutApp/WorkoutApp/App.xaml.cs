@@ -10,19 +10,21 @@ namespace WorkoutApp;
 
 public partial class App
 {
-    public App(
-        IDbContextFactory<WorkoutAppContext> dbContextFactory,
-        ISettingsService settingsService,
-        IDeviceDisplay deviceDisplay,
-        IDisplayOrientationService displayOrientationService,
-        ILogger<AppShell> logger)
+    private readonly IAppInfo _appInfo;
+    private readonly ILogger<App> _logger;
+
+    public App(IServiceProvider serviceProvider)
     {
         InitializeComponent();
 
-        if (settingsService == null) throw new ArgumentNullException(nameof(settingsService));
+        _appInfo = serviceProvider.GetRequiredService<IAppInfo>();
+        _logger = serviceProvider.GetRequiredService<ILogger<App>>();
 
-        settingsService.ThemeChanged += SettingsServiceOnThemeChanged;
-        settingsService.ThemeColorChanged += SettingsServiceOnThemeColorChanged;
+        var dbContextFactory = serviceProvider.GetRequiredService<IDbContextFactory<WorkoutAppContext>>();
+        var settingsService = serviceProvider.GetRequiredService<ISettingsService>();
+        var deviceDisplay = serviceProvider.GetRequiredService<IDeviceDisplay>();
+        var displayOrientationService = serviceProvider.GetRequiredService<IDisplayOrientationService>();
+        var logger = serviceProvider.GetRequiredService<ILogger<AppShell>>();
 
         LiveCharts.Configure(config =>
                 config
@@ -56,7 +58,29 @@ public partial class App
         var themeColor = settingsService.ThemeColor;
         LoadThemeColor(themeColor);
 
+        settingsService.ThemeChanged += SettingsServiceOnThemeChanged;
+        settingsService.ThemeColorChanged += SettingsServiceOnThemeColorChanged;
+
         MainPage = new AppShell(dbContextFactory, settingsService, deviceDisplay, displayOrientationService, logger);
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        var window = base.CreateWindow(activationState);
+
+        SetWindowTitle(window);
+
+        window.Created += (sender, args) =>
+        {
+            _logger.LogInformation("Started application {ApplicationName} {Version}", _appInfo.Name, _appInfo.VersionString);
+        };
+
+        window.Destroying += (sender, args) =>
+        {
+            _logger.LogInformation("Stopped application {@ApplicationName} {Version}", _appInfo.Name, _appInfo.VersionString);
+        };
+
+        return window;
     }
 
     #region Event Handlers
@@ -74,6 +98,15 @@ public partial class App
     #endregion
 
     #region Helpers
+
+    private void SetWindowTitle(Window window)
+    {
+        var title = $"{_appInfo.Name} v{_appInfo.Version}";
+#if DEBUG
+            title = $"{title} [DEBUG MODE]";
+#endif
+            window.Title = title;
+    }
 
     private static void LoadTheme(Theme theme)
     {

@@ -1,6 +1,8 @@
 ﻿using FluentResults;
 using Microsoft.Extensions.Logging;
+using UnitsNet;
 using WorkoutApp.Core.Extensions;
+using WorkoutApp.Core.Models;
 using WorkoutApp.Core.Models.Settings;
 using WorkoutApp.DAL.Constants;
 
@@ -158,13 +160,30 @@ public class PreferencesSettingsService : ServiceBase<PreferencesSettingsService
         }
         set
         {
-            Preferences.Set(SettingsKey.MassUnit, value.ToString());
+            Preferences.Set(SettingsKey.OneRepMaxStrategy, value.ToString());
             Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(OneRepMaxStrategy), value);
             OneRepMaxStrategyChanged?.Invoke(this, value);
         }
     }
 
     public event EventHandler<OneRepMaxStrategy>? OneRepMaxStrategyChanged;
+
+    public Mass DefaultBarbellWeight
+    {
+        get
+        {
+            var s = Preferences.Get(SettingsKey.DefaultBarbellWeightKg, AppSettings.Default.DefaultBarbellWeight.Kilograms);
+            return Mass.FromKilograms(s);
+        }
+        set
+        {
+            Preferences.Set(SettingsKey.DefaultBarbellWeightKg, value.Kilograms);
+            Logger.LogDebug("{ServiceName}: {Setting} updated to {Value}", Name, nameof(DefaultBarbellWeight), value);
+            DefaultBarbellWeightChanged?.Invoke(this, value);
+        }
+    }
+
+    public event EventHandler<Mass>? DefaultBarbellWeightChanged;
 
     #endregion
 

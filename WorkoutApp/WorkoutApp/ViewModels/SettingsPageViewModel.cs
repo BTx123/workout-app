@@ -6,20 +6,17 @@ namespace WorkoutApp.ViewModels;
 
 public partial class SettingsPageViewModel : ViewModelBase<SettingsPageViewModel>
 {
-    private readonly ISettingsService _settingsService;
+    public SettingsPageViewModel(IDialogService dialogService, ISettingsService settingsService, ILogger<SettingsPageViewModel> logger)
+        : base(dialogService, settingsService, logger)
+    {
+        Title = "Settings";
+    }
 
     [ObservableProperty]
     private IList<string> _searchStrings = new List<string>
     {
         SettingsKey.Theme, SettingsKey.GeneralSettings, SettingsKey.AppSettings, SettingsKey.DistanceUnit
     };
-
-    public SettingsPageViewModel(IDialogService dialogService, ISettingsService settingsService,
-        ILogger<SettingsPageViewModel> logger)
-        : base(dialogService, settingsService, logger)
-    {
-        _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
-    }
 
     [RelayCommand]
     public async Task Reset()
@@ -28,7 +25,7 @@ public partial class SettingsPageViewModel : ViewModelBase<SettingsPageViewModel
             "Are you sure you want to reset to default settings?", "OK", "Cancel");
         if (!confirm) return;
 
-        _settingsService.Reset();
+        SettingsService.Reset();
     }
 
     [RelayCommand]

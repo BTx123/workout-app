@@ -19,6 +19,7 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
     private readonly IDbContextFactory<WorkoutAppContext> _dbContextFactory;
     private readonly ISettingsService _settingsService;
     private static readonly Random Random = new();
+    private readonly IDispatcherTimer _refreshTimer;
 
     public HistoryPageViewModel(IDbContextFactory<WorkoutAppContext> dbContextFactory, IDialogService dialogService, ISettingsService settingsService, ILogger<HistoryPageViewModel> logger)
         : base(dialogService, settingsService, logger)
@@ -29,10 +30,12 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
         _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         _settingsService.FirstDayOfWeekChanged += SettingsServiceOnFirstDayOfWeekChanged;
 
-        RefreshTimer = Application.Current.Dispatcher.CreateTimer();
-        RefreshTimer.Interval = TimeSpan.FromSeconds(60);
-        RefreshTimer.IsRepeating = true;
-        RefreshTimer.Tick += RefreshTimerOnTick;
+        Title = "History";
+
+        _refreshTimer = Application.Current.Dispatcher.CreateTimer();
+        _refreshTimer.Interval = TimeSpan.FromSeconds(60);
+        _refreshTimer.IsRepeating = true;
+        _refreshTimer.Tick += RefreshTimerOnTick;
 
         WorkoutCalendar = new Calendar<WorkoutDay>
         {
@@ -51,8 +54,6 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
     }
 
     #region Properties
-
-    protected IDispatcherTimer RefreshTimer { get; }
 
     [ObservableProperty]
     private Calendar<WorkoutDay> _workoutCalendar;
@@ -78,13 +79,13 @@ public partial class HistoryPageViewModel : ViewModelBase<HistoryPageViewModel>
     private async Task Appearing(CancellationToken cancellationToken = default)
     {
         await Refresh(cancellationToken);
-        RefreshTimer.Start();
+        _refreshTimer.Start();
     }
 
     [RelayCommand(AllowConcurrentExecutions = false, IncludeCancelCommand = true)]
     private async Task Disappearing(CancellationToken cancellationToken = default)
     {
-        RefreshTimer.Stop();
+        _refreshTimer.Stop();
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteRefresh), AllowConcurrentExecutions = false, IncludeCancelCommand = true)]

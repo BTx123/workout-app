@@ -4,7 +4,7 @@ namespace WorkoutApp.Views;
 
 public partial class OneRepMaxCalculatorPage : ContentPage
 {
-    public OneRepMaxCalculatorPage(OneRepMaxCalculatorViewModel vm)
+    public OneRepMaxCalculatorPage(OneRepMaxCalculatorPageViewModel vm)
     {
         InitializeComponent();
 

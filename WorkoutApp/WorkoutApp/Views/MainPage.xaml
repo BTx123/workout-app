@@ -8,7 +8,7 @@
              x:Name="This">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Plate Calculator" Order="Secondary" Command="{Binding NavigateTo1RmCalculatorCommand}" />
+        <ToolbarItem Text="Plate Calculator" Order="Secondary" Command="{Binding NavigateToPlateCalculatorCommand}" />
         <ToolbarItem Text="1RM Calculator" Order="Secondary" Command="{Binding NavigateTo1RmCalculatorCommand}" />
     </ContentPage.ToolbarItems>
 
