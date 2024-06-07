@@ -3,7 +3,7 @@ using WorkoutApp.Services;
 
 namespace WorkoutApp.ViewModels;
 
-public partial class ViewModelBase<T> : ObservableObject
+public partial class ViewModelBase<T> : ObservableValidator
     where T : ObservableObject
 {
     /// <summary>

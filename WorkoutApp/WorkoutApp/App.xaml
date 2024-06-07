@@ -5,10 +5,12 @@
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:xcConverters="clr-namespace:XCalendar.Maui.Converters;assembly=XCalendar.Maui"
              xmlns:converters="clr-namespace:WorkoutApp.Converters"
+             xmlns:themes="clr-namespace:Syncfusion.Maui.Themes;assembly=Syncfusion.Maui.Core"
              x:Class="WorkoutApp.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <themes:SyncfusionThemeResourceDictionary VisualTheme="MaterialDark"/>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/CalendarStyles.xaml" />

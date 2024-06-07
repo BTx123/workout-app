@@ -42,7 +42,10 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
     public string RackingWeightUnitString => Mass.GetAbbreviation(RackingWeightUnit);
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RemainingWeight))]
     private ObservableCollection<PlateCount> _plateCounts = new();
+
+    public Mass RemainingWeight => Mass.From(PlateCounts.Sum(c => c.Count * c.Weight.Kilograms), RackingWeightUnit);
 
     #region Event Handlers
 
@@ -70,7 +73,8 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
             });
             if (!rackingResult.IsSuccess)
             {
-                DialogService.DisplayAlertAsync("Error", rackingResult.ErrorMessage() ?? string.Empty, "OK");
+                Logger.LogWarning("Failed to determine barbell racking: {Message}", rackingResult.ErrorMessage() ?? string.Empty);
+                // DialogService.DisplayAlertAsync("Error", rackingResult.ErrorMessage() ?? string.Empty, "OK");
                 return;
             }
 
@@ -83,6 +87,7 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
                     Count = count
                 });
             }
+            OnPropertyChanged(nameof(RemainingWeight));
         }
         catch (Exception e)
         {

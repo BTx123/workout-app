@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:inputs="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
              xmlns:viewModels="using:WorkoutApp.ViewModels"
              xmlns:models="clr-namespace:WorkoutApp.Core.Models;assembly=WorkoutApp.Core"
              x:Class="WorkoutApp.Views.PlateCalculatorPage"
@@ -25,7 +26,10 @@
 
                 <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource Spacing}">
                     <Label Grid.Column="0" Text="Desired Weight:" />
-                    <Entry Grid.Column="1" Text="{Binding RackingWeight}" Keyboard="Numeric" ReturnType="Done" />
+                    <inputs:SfNumericEntry Grid.Column="1" Value="{Binding RackingWeight}"
+                                           ValueChangeMode="OnKeyFocus" UpDownPlacementMode="Inline" SmallChange="5" LargeChange="10"
+                                           Minimum="0" AllowNull="False" CustomFormat="0." FontSize="Medium" />
+                    <!-- <Entry Grid.Column="1" Text="{Binding RackingWeight}" Keyboard="Numeric" ReturnType="Done" /> -->
                     <Label Grid.Column="2" Text="{Binding RackingWeightUnitString}" />
                 </Grid>
                 
@@ -33,16 +37,16 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell x:DataType="models:PlateCount">
-                                <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,Auto"
-                                      RowSpacing="{StaticResource Spacing}" ColumnSpacing="{StaticResource Spacing}"
-                                      Padding="{StaticResource Padding}">
-                                    <Label Grid.Column="1"
-                                           Text="{Binding Weight}"
-                                           FontAttributes="Bold" />
-                                    <Label Grid.Column="0"
-                                           Text="{Binding Count, StringFormat='{0}x'}"
-                                           FontAttributes="Italic"
-                                           VerticalOptions="End" />
+                                <Grid Padding="{StaticResource Padding}">
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Count}" />
+                                                <Span Text=" x " />
+                                                <Span Text="{Binding Weight, StringFormat='{0:F1}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
