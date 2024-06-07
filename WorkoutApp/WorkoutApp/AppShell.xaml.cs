@@ -78,13 +78,18 @@ public partial class AppShell
             var barbells = new List<Barbell>
             {
                 new() { Name = "Olympic", MassKg = Convert.ToDecimal(Mass.FromKilograms(20).Kilograms) },
-                new() { Name = "Standard", MassKg = Convert.ToDecimal(Mass.FromPounds(45).Kilograms) }
+                new() { Name = "Standard", MassKg = Convert.ToDecimal(Mass.FromPounds(44).Kilograms) }
             };
             db.Barbells.AddRange(barbells);
             db.SaveChanges();
 
             var standardBarbell = db.Barbells.FirstOrDefault(b => b.Name == "Standard");
             if (standardBarbell == null) throw new Exception("Failed to get standard barbell for sample data set");
+            standardBarbell.MassKg = Convert.ToDecimal(Mass.FromPounds(45).Kilograms);
+            Thread.Sleep(2000);
+            db.Barbells.Update(standardBarbell);
+            db.SaveChanges();
+
             var exercises = new List<Exercise>
             {
                 new() { Name = "Squat", Barbell = standardBarbell },

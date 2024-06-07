@@ -27,4 +27,26 @@ public class WorkoutAppContext : DbContext
     public DbSet<SetGroup> SetGroups { get; set; }
 
     public DbSet<Set> Sets { get; set; }
+
+    public override int SaveChanges()
+    {
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is EntityBase)
+            .Where(e => e.State is EntityState.Added or EntityState.Modified);
+
+        foreach (var entityEntry in entries)
+        {
+            var timestamp = DateTime.UtcNow;
+            if (entityEntry.Entity is not EntityBase entity) continue;
+
+            entity.UpdatedAt = timestamp;
+            if (entityEntry.State == EntityState.Added)
+            {
+                entity.CreatedAt = timestamp;
+            }
+        }
+
+        return base.SaveChanges();
+    }
 }
