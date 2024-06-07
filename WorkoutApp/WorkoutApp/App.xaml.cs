@@ -1,6 +1,7 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WorkoutApp.DAL.Constants;
 using WorkoutApp.DAL.Context;
@@ -15,6 +16,9 @@ public partial class App
 
     public App(IServiceProvider serviceProvider)
     {
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(configuration["Syncfusion:LicenseKey"]);
+
         InitializeComponent();
 
         _appInfo = serviceProvider.GetRequiredService<IAppInfo>();

@@ -1,9 +1,20 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Hosting;
+using Microsoft.Maui.Networking;
+using Microsoft.Maui.Storage;
 using NLog.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Core.Hosting;
 using WorkoutApp.Constants;
 using WorkoutApp.Core.Factories;
 using WorkoutApp.Core.Strategies.BarbellRacking;
@@ -30,8 +41,10 @@ public static class MauiProgram
                 fonts.AddFont("Font Awesome 6 Free-Solid-900.otf", "FontAwesomeSolid");
             })
             .UseMauiCommunityToolkit()
+            .ConfigureSyncfusionCore()
             .UseSkiaSharp(true)
             .RegisterLogging()
+            .RegisterConfiguration()
             .RegisterServices()
             .RegisterViewModels()
             .RegisterViews();
@@ -46,6 +59,12 @@ public static class MauiProgram
 #endif
         builder.Logging.AddNLog();
 
+        return builder;
+    }
+
+    private static MauiAppBuilder RegisterConfiguration(this MauiAppBuilder builder)
+    {
+        builder.Configuration.AddUserSecrets<App>();
         return builder;
     }
 
