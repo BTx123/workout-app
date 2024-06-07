@@ -4,11 +4,11 @@ namespace WorkoutApp.DAL.Entities;
 
 public class SetGroup : EntityBase
 {
-    public string ExerciseId { get; set; }
+    public int ExerciseId { get; set; }
 
     public Exercise Exercise { get; set; }
 
-    public string WorkoutId { get; set; }
+    public int WorkoutId { get; set; }
 
     public Workout Workout { get; set; }
 

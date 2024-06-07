@@ -4,7 +4,7 @@ namespace WorkoutApp.DAL.Entities;
 
 public class Set : EntityBase
 {
-    public string SetGroupId { get; init; }
+    public int SetGroupId { get; init; }
 
     public SetGroup SetGroup { get; init; }
 

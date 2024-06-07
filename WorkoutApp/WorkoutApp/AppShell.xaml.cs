@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using UnitsNet;
 using WorkoutApp.DAL.Context;
+using WorkoutApp.DAL.Entities;
 using WorkoutApp.Services;
 
 namespace WorkoutApp;
@@ -69,17 +71,36 @@ public partial class AppShell
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        // var user = User.Create(User.DefaultUser, DateTime.UtcNow, DateTime.UtcNow);
-        // db.Users.Add(user);
-        //
-        // var exercises = new List<Exercise>
-        // {
-        //     Exercise.Create("Squat"),
-        //     Exercise.Create("Bench"),
-        //     Exercise.Create("Deadlift"),
-        // };
-        // db.Exercises.AddRange(exercises);
-        //
+        using var transaction = db.Database.BeginTransaction();
+
+        try
+        {
+            var barbells = new List<Barbell>
+            {
+                new() { Name = "Olympic", MassKg = Convert.ToDecimal(Mass.FromKilograms(20).Kilograms) },
+                new() { Name = "Standard", MassKg = Convert.ToDecimal(Mass.FromPounds(45).Kilograms) }
+            };
+            db.Barbells.AddRange(barbells);
+            db.SaveChanges();
+
+            var standardBarbell = db.Barbells.FirstOrDefault(b => b.Name == "Standard");
+            if (standardBarbell == null) throw new Exception("Failed to get standard barbell for sample data set");
+            var exercises = new List<Exercise>
+            {
+                new() { Name = "Squat", Barbell = standardBarbell },
+                new() { Name = "Bench", Barbell = standardBarbell },
+                new() { Name = "Deadlift", Barbell = standardBarbell },
+            };
+            db.Exercises.AddRange(exercises);
+            db.SaveChanges();
+
+            transaction.Commit();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Unexpected error occurred: {Exception}", e);
+        }
+
         // const int workoutCount = 10;
         // for (var i = 0; i < workoutCount; i++)
         // {

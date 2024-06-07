@@ -6,5 +6,5 @@ namespace WorkoutApp.Core.Models;
 public abstract class ModelBase : IHasId
 {
     [MaxLength(100)]
-    public string? Id { get; init; }
+    public int? Id { get; init; }
 }
