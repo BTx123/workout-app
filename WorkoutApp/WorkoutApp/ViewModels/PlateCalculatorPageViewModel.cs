@@ -25,21 +25,25 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
         _barbellRackingStrategy = barbellRackingStrategy ?? throw new ArgumentNullException(nameof(barbellRackingStrategy));
 
         Title = "Plate Calculator";
-        _rackingWeight = 0; // do not use public property here, will trigger event handler
-        _rackingWeightUnit = SettingsService.MassType.ToMassUnit();
+        _rackingWeightUnit = SettingsService.MassType.ToMassUnit(); // do not use public property here, will trigger event handler
+        _rackingWeight = Mass.From(0, _rackingWeightUnit);
 
         SettingsService.MassUnitChanged += SettingsServiceOnMassUnitChanged;
     }
 
     [ObservableProperty]
     // [Range(0, double.PositiveInfinity)]
-    private double? _rackingWeight;
+    private Mass? _rackingWeight;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RackingWeightUnitString))]
     private MassUnit _rackingWeightUnit;
 
     public string RackingWeightUnitString => Mass.GetAbbreviation(RackingWeightUnit);
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PlateCounts))]
+    private bool _showPlatesPerSide = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RemainingWeight))]
@@ -54,11 +58,25 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
         RackingWeightUnit = e.ToMassUnit();
     }
 
-    partial void OnRackingWeightChanged(double? value)
+    partial void OnRackingWeightChanged(Mass? value)
+    {
+        CalculatePlateCount(value, ShowPlatesPerSide);
+    }
+
+    partial void OnShowPlatesPerSideChanged(bool value)
+    {
+        CalculatePlateCount(RackingWeight, value);
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    private void CalculatePlateCount(Mass? rackingWeight, bool computePlatesPerSide)
     {
         try
         {
-            if (!value.HasValue)
+            if (!rackingWeight.HasValue)
             {
                 PlateCounts.Clear();
                 return;
@@ -68,11 +86,12 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
             {
                 BarbellWeight = SettingsService.DefaultBarbellWeight,
                 AvailablePlates = AppSettings.Default.AvailablePlates,
-                DesiredWeight = Mass.From(value.Value, RackingWeightUnit),
+                DesiredWeight = rackingWeight.Value,
                 AllowRemainingWeight = true
             });
             if (!rackingResult.IsSuccess)
             {
+                PlateCounts.Clear();
                 Logger.LogWarning("Failed to determine barbell racking: {Message}", rackingResult.ErrorMessage() ?? string.Empty);
                 // DialogService.DisplayAlertAsync("Error", rackingResult.ErrorMessage() ?? string.Empty, "OK");
                 return;
@@ -84,7 +103,7 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
                 PlateCounts.Add(new PlateCount
                 {
                     Weight = weight,
-                    Count = count
+                    Count = computePlatesPerSide ? count / 2 : count
                 });
             }
             OnPropertyChanged(nameof(RemainingWeight));

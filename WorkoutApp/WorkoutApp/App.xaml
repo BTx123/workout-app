@@ -29,6 +29,7 @@
             <xcConverters:StringCharLimitConverter x:Key="StringCharLimitConverter" />
             <xcConverters:LocalizeDayOfWeekAndCharLimitConverter x:Key="LocalizeDayOfWeekAndCharLimitConverter" />
             <converters:MassToValueConverter x:Key="MassToValueConverter" />
+            <converters:MassToValueWithUnitMultiConverter x:Key="MassToValueWithUnitMultiConverter" />
 
             <!-- Spacing -->
             <Thickness x:Key="Margin">20</Thickness>

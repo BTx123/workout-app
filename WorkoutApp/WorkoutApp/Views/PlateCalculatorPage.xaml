@@ -26,9 +26,16 @@
 
                 <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource Spacing}">
                     <Label Grid.Column="0" Text="Desired Weight:" />
-                    <inputs:SfNumericEntry Grid.Column="1" Value="{Binding RackingWeight}"
+                    <inputs:SfNumericEntry Grid.Column="1"
                                            ValueChangeMode="OnKeyFocus" UpDownPlacementMode="Inline" SmallChange="5" LargeChange="10"
-                                           Minimum="0" AllowNull="False" CustomFormat="0." FontSize="Medium" />
+                                           Minimum="0" AllowNull="False" CustomFormat="0." FontSize="Medium">
+                        <inputs:SfNumericEntry.Value>
+                            <MultiBinding Converter="{StaticResource MassToValueWithUnitMultiConverter}">
+                                <Binding Path="RackingWeight" />
+                                <Binding Path="RackingWeightUnit" />
+                            </MultiBinding>
+                        </inputs:SfNumericEntry.Value>
+                    </inputs:SfNumericEntry>
                     <!-- <Entry Grid.Column="1" Text="{Binding RackingWeight}" Keyboard="Numeric" ReturnType="Done" /> -->
                     <Label Grid.Column="2" Text="{Binding RackingWeightUnitString}" />
                 </Grid>

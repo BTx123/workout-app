@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace WorkoutApp.Converters;
 
@@ -13,8 +14,7 @@ public class MassToValueConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not string massString) return null;
-        if (!Mass.TryParse(massString, out var mass)) return null;
-        return mass;
+        if (value is not double massValue) return null;
+        return Mass.FromKilograms(massValue);
     }
 }
