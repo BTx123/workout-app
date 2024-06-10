@@ -26,18 +26,18 @@
 
                 <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource Spacing}">
                     <Label Grid.Column="0" Text="Desired Weight:" />
-                    <inputs:SfNumericEntry Grid.Column="1"
+                    <inputs:SfNumericEntry Grid.Column="1" Value="{Binding RawRackingWeight}"
                                            ValueChangeMode="OnKeyFocus" UpDownPlacementMode="Inline" SmallChange="5" LargeChange="10"
-                                           Minimum="0" AllowNull="False" CustomFormat="0." FontSize="Medium">
-                        <inputs:SfNumericEntry.Value>
-                            <MultiBinding Converter="{StaticResource MassToValueWithUnitMultiConverter}">
-                                <Binding Path="RackingWeight" />
-                                <Binding Path="RackingWeightUnit" />
-                            </MultiBinding>
-                        </inputs:SfNumericEntry.Value>
+                                           Minimum="0" AllowNull="False" CustomFormat="0.00" FontSize="Medium">
+                        <!-- <inputs:SfNumericEntry.Value> -->
+                        <!--     <MultiBinding Converter="{StaticResource MassToValueWithUnitMultiConverter}"> -->
+                        <!--         <Binding Path="RackingWeight" /> -->
+                        <!--         <Binding Path="RackingWeightUnit" /> -->
+                        <!--     </MultiBinding> -->
+                        <!-- </inputs:SfNumericEntry.Value> -->
                     </inputs:SfNumericEntry>
                     <!-- <Entry Grid.Column="1" Text="{Binding RackingWeight}" Keyboard="Numeric" ReturnType="Done" /> -->
-                    <Label Grid.Column="2" Text="{Binding RackingWeightUnitString}" />
+                    <Label Grid.Column="2" Text="{Binding RackingWeightUnit}" />
                 </Grid>
                 
                 <ListView ItemsSource="{Binding PlateCounts}">
@@ -59,6 +59,10 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
+                <Grid ColumnDefinitions="Auto">
+                    <Label Text="{Binding RemainingWeight, StringFormat='Remaining Weight: {0}'}" />
+                </Grid>
 
             </VerticalStackLayout>
         </ScrollView>

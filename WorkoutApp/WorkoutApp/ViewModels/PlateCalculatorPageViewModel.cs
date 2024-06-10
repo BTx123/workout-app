@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
 using UnitsNet;
 using UnitsNet.Units;
+using WorkoutApp.Core.Constants;
 using WorkoutApp.Core.Extensions;
 using WorkoutApp.Core.Library;
 using WorkoutApp.Core.Models;
@@ -25,15 +26,23 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
         _barbellRackingStrategy = barbellRackingStrategy ?? throw new ArgumentNullException(nameof(barbellRackingStrategy));
 
         Title = "Plate Calculator";
+        _barbellWeight = SettingsService.DefaultBarbellWeight;
         _rackingWeightUnit = SettingsService.MassType.ToMassUnit(); // do not use public property here, will trigger event handler
-        _rackingWeight = Mass.From(0, _rackingWeightUnit);
+        _rawRackingWeight = 0;
 
         SettingsService.MassUnitChanged += SettingsServiceOnMassUnitChanged;
+        SettingsService.DefaultBarbellWeightChanged += SettingsServiceOnDefaultBarbellWeightChanged;
     }
 
     [ObservableProperty]
-    // [Range(0, double.PositiveInfinity)]
-    private Mass? _rackingWeight;
+    [NotifyPropertyChangedFor(nameof(PlateCounts))]
+    private Mass _barbellWeight;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RackingWeight))]
+    private double? _rawRackingWeight;
+
+    public Mass? RackingWeight => RawRackingWeight.HasValue ? Mass.From(RawRackingWeight.Value, RackingWeightUnit) : null;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(RackingWeightUnitString))]
@@ -49,7 +58,18 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
     [NotifyPropertyChangedFor(nameof(RemainingWeight))]
     private ObservableCollection<PlateCount> _plateCounts = new();
 
-    public Mass RemainingWeight => Mass.From(PlateCounts.Sum(c => c.Count * c.Weight.Kilograms), RackingWeightUnit);
+    public Mass? RemainingWeight
+    {
+        get
+        {
+            if (!RackingWeight.HasValue) return null;
+
+            var plateCountWeight = PlateCounts.Aggregate(Mass.Zero, (current, plateCount) => current + plateCount.Weight * plateCount.Count);
+            var totalWeight = (ShowPlatesPerSide ? 2 * plateCountWeight : plateCountWeight) + BarbellWeight;
+            var remainingWeight = RackingWeight.Value - totalWeight.ToUnit(RackingWeightUnit);
+            return remainingWeight < MassConstants.Tolerance ? Mass.Zero.ToUnit(RackingWeightUnit) : remainingWeight;
+        }
+    }
 
     #region Event Handlers
 
@@ -58,9 +78,22 @@ public partial class PlateCalculatorPageViewModel : ViewModelBase<PlateCalculato
         RackingWeightUnit = e.ToMassUnit();
     }
 
-    partial void OnRackingWeightChanged(Mass? value)
+    private void SettingsServiceOnDefaultBarbellWeightChanged(object? sender, Mass e)
     {
-        CalculatePlateCount(value, ShowPlatesPerSide);
+        BarbellWeight = e;
+    }
+
+    partial void OnRawRackingWeightChanged(double? value)
+    {
+        CalculatePlateCount(RackingWeight, ShowPlatesPerSide);
+    }
+
+    partial void OnRackingWeightUnitChanged(MassUnit value)
+    {
+        if (!RackingWeight.HasValue) return;
+
+        var oldWeight = RackingWeight;
+        RawRackingWeight = oldWeight.Value.ToUnit(value).Value;
     }
 
     partial void OnShowPlatesPerSideChanged(bool value)
