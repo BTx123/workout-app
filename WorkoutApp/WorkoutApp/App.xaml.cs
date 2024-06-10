@@ -3,6 +3,7 @@ using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Syncfusion.Maui.Themes;
 using WorkoutApp.DAL.Constants;
 using WorkoutApp.DAL.Context;
 using WorkoutApp.Services;
@@ -89,7 +90,7 @@ public partial class App
 
     #region Event Handlers
 
-    private static void SettingsServiceOnThemeChanged(object? sender, Theme e)
+    private void SettingsServiceOnThemeChanged(object? sender, Theme e)
     {
         LoadTheme(e);
     }
@@ -112,27 +113,66 @@ public partial class App
             window.Title = title;
     }
 
-    private static void LoadTheme(Theme theme)
+    private void LoadTheme(Theme theme)
     {
-        if (Current == null) return;
-
-        Current.UserAppTheme = theme switch
+        if (Current == null)
         {
-            Theme.Light => AppTheme.Light,
-            Theme.Dark => AppTheme.Dark,
-            Theme.System => AppTheme.Unspecified,
-            _ => AppTheme.Unspecified
-        };
+            _logger.LogWarning("Failed to load theme {Theme}, current application unavailable", theme);
+            return;
+        }
+
+        try
+        {
+            Current.UserAppTheme = theme switch
+            {
+                Theme.Light => AppTheme.Light,
+                Theme.Dark => AppTheme.Dark,
+                Theme.System => AppTheme.Unspecified,
+                _ => AppTheme.Unspecified
+            };
+
+            var syncfusionResourceDictionary = Current.Resources.MergedDictionaries.OfType<SyncfusionThemeResourceDictionary>().FirstOrDefault();
+            if (syncfusionResourceDictionary != null)
+            {
+                syncfusionResourceDictionary.VisualTheme = theme switch
+                {
+                    Theme.Light => SfVisuals.MaterialLight,
+                    Theme.Dark => SfVisuals.MaterialDark,
+                    Theme.System => SfVisuals.MaterialDark,
+                    _ => SfVisuals.MaterialDark
+                };
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning(e, "Failed to load theme {Theme}", theme);
+        }
     }
 
-    private static void LoadThemeColor(Color color)
+    private void LoadThemeColor(Color color)
     {
-        if (Current == null) return;
+        if (Current == null)
+        {
+            _logger.LogWarning("Failed to load theme color {Color}, current application unavailable", color);
+            return;
+        }
 
-        var colorResources = Current.Resources.MergedDictionaries.First();
-        colorResources["Primary"] = color;
-        colorResources["Secondary"] = color.WithSaturation(color.GetSaturation() * 0.5f).WithLuminosity(0.5f * (color.GetLuminosity() + 1));
-        colorResources["Tertiary"] = color.WithSaturation(0.5f * (color.GetSaturation() + 1)).WithLuminosity(color.GetLuminosity() * 0.5f);
+        try
+        {
+            var colorResourceDictionary = Current.Resources.MergedDictionaries
+                .FirstOrDefault(d => d.Source != null && d.Source.ToString().Contains("Colors.xaml"));
+
+            if (colorResourceDictionary != null)
+            {
+                colorResourceDictionary["Primary"] = color;
+                colorResourceDictionary["Secondary"] = color.WithSaturation(color.GetSaturation() * 0.5f).WithLuminosity(0.5f * (color.GetLuminosity() + 1));
+                colorResourceDictionary["Tertiary"] = color.WithSaturation(0.5f * (color.GetSaturation() + 1)).WithLuminosity(color.GetLuminosity() * 0.5f);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning(e, "Failed to load theme color {Color}", color);
+        }
     }
 
     #endregion
